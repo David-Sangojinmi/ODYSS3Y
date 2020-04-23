@@ -39,6 +39,26 @@ var gameplay = false;
 var gamepaused = false;
 var gameend = false;
 var lastTime = 0;
+var controller = {
+    left: false,
+    right: false,
+    up: false,
+    keyListener:function(event) {
+        var key_state = (event.type == "keydown")?true:false;
+
+        switch (event.keyCode) {
+            case 37:
+                controller.left = key_sate;
+                break;
+            case 38:
+                controller.up = key_state;
+                break;
+            case 39:
+                controller.right = key_state;
+                break;
+        }
+    }
+};
 
 ///////////////////////////////
 ////  GAMEPLAY FUNCTIONS   ////
@@ -85,6 +105,34 @@ function coinCollision() {
     }
 }
 
+loop = function () {
+    if (controller.up && sprite.jumping == false) {
+        sprite.dY -= 20;
+        sprite.jumping = true;
+    }
+    if (controller.left) {
+        sprite.dX -= 0.5;
+    }
+    if (controller.right) {
+        sprite.dX += 0.5;
+    }
+
+    sprite.dY += 1.5; // Gravity
+    sprite.position.x += sprite.dX;
+    sprite.position.y += sprite.dY;
+    sprite.dX *= 0.9; // Friction
+    sprite.dY *= 0.9; // Friction
+
+    if (sprite.position.y > GAME_HEIGHT - 80 - 70) { // Sprite falling below floor
+        sprite.jumping = false;
+        sprite.position.y = GAME_HEIGHT - 80 - 70;;
+        sprite.dY = 0;
+    }
+
+    // if () {         If going off the
+    // }               side of the screen
+};
+
 function gamePlay(timestamp) {
     let deltaTime = timestamp - lastTime;
     lastTime = timestamp;
@@ -96,7 +144,7 @@ function gamePlay(timestamp) {
     gStats.display(ctx);
     coinS.displayCoins(ctx);
 
-    setInterval(sprite.displaySprite(ctx), 900);
+    sprite.displaySprite(ctx);
     sprite.update(deltaTime);
 
     coinCollision();
@@ -125,6 +173,7 @@ document.addEventListener("click", (evnt) => {
             evnt.clientY <= 17 + 35 + winRect.top + 2
         ) {
             gamepaused = true;
+            gameplay = false;
             gameLoop();
         }
     }
@@ -146,34 +195,37 @@ document.addEventListener("click", (pauseevnt) => {
     }
 });
 
-document.addEventListener("keydown", (event) => {
-    if (gameplay === true && gamepaused === false) {
-        switch (event.code) {
-            case "ArrowLeft":
-            case "KeyA":
-                if (sprite.position.x <= 250) {
-                    platform.scrollLeft();
-                    coinS.scrollLeft();
-                } else {
-                    sprite.moveLeft();
-                }
-                break;
-            case "ArrowRight":
-            case "KeyD":
-                if (sprite.position.x + 20 >= 550) {
-                    platform.scrollRight();
-                    coinS.scrollRight();
-                } else {
-                    sprite.moveRight();
-                }
-                break;
-            case "ArrowUp":
-            case "KeyW":
-                sprite.jump(ctx);
-                break;
-        }
-    }
-});
+////////////
+document.addEventListener("Keydown", controller.keyListener);
+document.addEventListener("keyup", controller.keyListener);
+// document.addEventListener("keydown", (event) => {
+//     if (gameplay === true && gamepaused === false) {
+//         switch (event.code) {
+//             case "ArrowLeft":
+//             case "KeyA":
+//                 if (sprite.position.x <= 250) {
+//                     platform.scrollLeft();
+//                     coinS.scrollLeft();
+//                 } else {
+//                     sprite.moveLeft();
+//                 }
+//                 break;
+//             case "ArrowRight":
+//             case "KeyD":
+//                 if (sprite.position.x + 20 >= 550) {
+//                     platform.scrollRight();
+//                     coinS.scrollRight();
+//                 } else {
+//                     sprite.moveRight();
+//                 }
+//                 break;
+//             case "ArrowUp":
+//             case "KeyW":
+//                 sprite.jump(ctx);
+//                 break;
+//         }
+//     }
+// });
 
 function gameEnd() {
     ctx.drawImage(background, 0, 0);
