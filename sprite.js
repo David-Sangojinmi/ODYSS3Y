@@ -34,8 +34,6 @@ export default class Sprite {
         if (this.fpsCount % 10 == 0) {
             this.currentFrame = ++this.currentFrame % this.totalFrames;
         }
-        // this.fpsCount = 0;
-        // this.currentFrame = ++this.currentFrame % this.totalFrames;
         this.srcX = this.currentFrame * this.spriteWidth;
         this.srcY = 0;
     }
@@ -51,21 +49,9 @@ export default class Sprite {
 
     displaySprite(ctx) {
         this.drawSprite(ctx);
-        // this.position.y += this.gravity;
-        // if (this.position.y >= this.gameHeight - 80 - (this.height * this.scale)) {
-        //     this.position.y = this.gameHeight - 80 - this.height * this.scale;
-        // }
-        // if (this.position.y < this.gameHeight - 80 - this.height*this.scale) {
-        //     this.position.y += this.gravity;
-        //     if (this.gravity <= 1) {
-        //         this.gravity -= 0;
-        //     } else {
-        //         this.gravity -= 0.016;
-        //     }
-        // }
     }
 
-    moveLeft(ctx) {
+    drawMovingLeft(ctx) {
         this.updateFrame();
         ctx.drawImage(
             this.sprite,
@@ -78,18 +64,25 @@ export default class Sprite {
             this.spriteWidth * this.scale,
             this.spritesheetHeight * this.scale
         );
-        this.position.x -= this.dX;
     }
 
-    moveRight() {
-        sprite.dX += 0.5;
-        // Draw moving right
+    drawMovingRight() {
+        this.updateFrame();
+        ctx.drawImage(
+            this.sprite,
+            this.srcX,
+            this.srcY,
+            this.spriteWidth,
+            this.spritesheetHeight,
+            this.position.x,
+            this.position.y,
+            this.spriteWidth * this.scale,
+            this.spritesheetHeight * this.scale
+        );
     }
 
-    jump(ctx) {
-        this.position.y -= 100;
-        this.gravity = 10;
-        // this.position.y -= this.dY;
+    drawJump(ctx) {
+        // Draw jumping
     }
 
     update(deltaTime) {
