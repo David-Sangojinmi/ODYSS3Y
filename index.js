@@ -2,9 +2,8 @@
 Author: David Sangojinmi
 Background image: https://craftpix.net/freebies/free-horizontal-2d-game-backgrounds/?utm_source=opengameart&utm_medium=public&utm_campaign=myself
 To-Do:
-    - Draw a player sprite
-    - Animate the player sprite
-    - Maybe player terrain interaction
+    - Better player terrain interaction
+    - Fix the bug with the pause button
 */
 
 var cvs = document.getElementById("gameScreen");
