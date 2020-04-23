@@ -10,10 +10,10 @@ export default class Sprite {
         };
 
         // Physics
-        this.jumping = false;
+        this.jumping = true;
         this.dX = 0;
         this.dY = 0;
-        this.gravity = 10;
+        //this.gravity = 10;
 
         // Animation
         this.sprite = new Image();
@@ -51,18 +51,18 @@ export default class Sprite {
 
     displaySprite(ctx) {
         this.drawSprite(ctx);
-        this.position.y += this.gravity;
-        if (this.position.y >= this.gameHeight - 80 - (this.height * this.scale)) {
-            this.position.y = this.gameHeight - 80 - this.height * this.scale;
-        }
-        if (this.position.y < this.gameHeight - 80 - this.height*this.scale) {
-            this.position.y += this.gravity;
-            if (this.gravity <= 1) {
-                this.gravity -= 0;
-            } else {
-                this.gravity -= 0.016;
-            }
-        }
+        // this.position.y += this.gravity;
+        // if (this.position.y >= this.gameHeight - 80 - (this.height * this.scale)) {
+        //     this.position.y = this.gameHeight - 80 - this.height * this.scale;
+        // }
+        // if (this.position.y < this.gameHeight - 80 - this.height*this.scale) {
+        //     this.position.y += this.gravity;
+        //     if (this.gravity <= 1) {
+        //         this.gravity -= 0;
+        //     } else {
+        //         this.gravity -= 0.016;
+        //     }
+        // }
     }
 
     moveLeft(ctx) {
