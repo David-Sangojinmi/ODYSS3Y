@@ -81,8 +81,9 @@ export default class Sprite {
         this.position.x -= this.dX;
     }
 
-    moveRight(ctx) {
-        this.position.x += this.dX;
+    moveRight() {
+        sprite.dX += 0.5;
+        // Draw moving right
     }
 
     jump(ctx) {
