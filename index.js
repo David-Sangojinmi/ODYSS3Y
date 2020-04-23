@@ -1,6 +1,8 @@
 /*
 Author: David Sangojinmi
 Background image: https://craftpix.net/freebies/free-horizontal-2d-game-backgrounds/?utm_source=opengameart&utm_medium=public&utm_campaign=myself
+Terrain tile set: 
+Sprite sheets: 
 To-Do:
     - Better player terrain interaction
     - Fix the bug with the pause button
@@ -15,6 +17,7 @@ var winRect = cvs.getBoundingClientRect();
 // Importing the classes needed
 import Platform from "./platform.js";
 import Sprite from "./sprite.js";
+import Background from "./background.js";
 import gameScreens from "./gameScreens.js";
 import gameStats from "./gameStats.js";
 import Coin from "./coins.js";
@@ -28,6 +31,7 @@ background.src = "images/bg6-3.jpg";
 //     jumpS.src = "sounds/jump.mp3";
 
 // Important variables
+let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
 let platform = new Platform(GAME_WIDTH, GAME_HEIGHT);
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
@@ -70,7 +74,7 @@ function gameStart(timestamp) {
     lastTime = timestamp;
 
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    ctx.drawImage(background, 0, 0);
+    bg.gsdraw(ctx);
     gScreens.update(deltaTime);
     gScreens.startScreen(ctx);
 
@@ -109,7 +113,7 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 30;
+        sprite.dY -= 35;
         sprite.jumping = true;
     }
     if (controller.left) {
@@ -131,10 +135,18 @@ function loop() {
     }
 
     if (sprite.position.x + sprite.width > 550) { // Scroll left
+        bg.pos.l1x -= sprite.dX * 0.2;
+        bg.pos.l2x -= sprite.dX * 0.4;
+        bg.pos.l3x -= sprite.dX * 0.6;
+        bg.pos.l4x -= sprite.dX * 0.8;
         platform.basePosition.x -= sprite.dX;
-        sprite.position.x = 530;
+        sprite.position.x = 550 - sprite.width;
     }
     if (sprite.position.x < 250) { // Scroll Right
+        bg.pos.l1x -= sprite.dX * 0.2;
+        bg.pos.l2x -= sprite.dX * 0.4;
+        bg.pos.l3x -= sprite.dX * 0.6;
+        bg.pos.l4x -= sprite.dX * 0.8;
         platform.basePosition.x -= sprite.dX;
         sprite.position.x = 250;
     }
@@ -148,7 +160,7 @@ function gamePlay(timestamp) {
     lastTime = timestamp;
 
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    ctx.drawImage(background, 0, 0);
+    bg.gpdraw(ctx);
     platform.drawTerrain(ctx);
     gStats.update(deltaTime);
     gStats.display(ctx);
@@ -209,30 +221,6 @@ document.addEventListener("click", (pauseevnt) => {
 // For sprite movement and scrolling //
 document.addEventListener("keydown", controller.keyListener);
 document.addEventListener("keyup", controller.keyListener);
-
-// document.addEventListener("keydown", (event) => {
-//     if (gameplay === true && gamepaused === false) {
-//         switch (event.code) {
-//             case "ArrowLeft":
-//             case "KeyA":
-//                 if (sprite.position.x <= 250) {
-//                     platform.scrollLeft();
-//                     coinS.scrollLeft();
-//                 } else {
-//                     sprite.moveLeft();
-//                 }
-//                 break;
-//             case "ArrowRight":
-//             case "KeyD":
-//                 if (sprite.position.x + 20 >= 550) {
-//                     platform.scrollRight();
-//                     coinS.scrollRight();
-//                 } else {
-//                     sprite.moveRight();
-//                 }
-//                 break;
-//     }
-// });
 
 function gameEnd() {
     ctx.drawImage(background, 0, 0);
