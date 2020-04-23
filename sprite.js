@@ -2,9 +2,6 @@ export default class Sprite {
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.dX = 5;
-        this.dY = 70;
-        this.gravity = 1;
         this.width = 28;
         this.height = 70;
         this.position = {
@@ -12,6 +9,13 @@ export default class Sprite {
             y: 300,
         };
 
+        // Physics
+        this.jumping = false;
+        this.dX = 0;
+        this.dY = 0;
+        this.gravity = 10;
+
+        // Animation
         this.sprite = new Image();
         this.sprite.src = "images/spritesheet.png";
         this.srcX = 0;
@@ -27,7 +31,7 @@ export default class Sprite {
 
     updateFrame() {
         this.fpsCount++;
-        if (this.fpsCount % 15 == 0) {
+        if (this.fpsCount % 10 == 0) {
             this.currentFrame = ++this.currentFrame % this.totalFrames;
         }
         // this.fpsCount = 0;
@@ -51,9 +55,29 @@ export default class Sprite {
         if (this.position.y >= this.gameHeight - 80 - (this.height * this.scale)) {
             this.position.y = this.gameHeight - 80 - this.height * this.scale;
         }
+        if (this.position.y < this.gameHeight - 80 - this.height*this.scale) {
+            this.position.y += this.gravity;
+            if (this.gravity <= 1) {
+                this.gravity -= 0;
+            } else {
+                this.gravity -= 0.016;
+            }
+        }
     }
 
     moveLeft(ctx) {
+        this.updateFrame();
+        ctx.drawImage(
+            this.sprite,
+            this.srcX,
+            this.srcY,
+            this.spriteWidth,
+            this.spritesheetHeight,
+            this.position.x,
+            this.position.y,
+            this.spriteWidth * this.scale,
+            this.spritesheetHeight * this.scale
+        );
         this.position.x -= this.dX;
     }
 
@@ -62,7 +86,9 @@ export default class Sprite {
     }
 
     jump(ctx) {
-        this.position.y -= this.dY;
+        this.position.y -= 100;
+        this.gravity = 10;
+        // this.position.y -= this.dY;
     }
 
     update(deltaTime) {
