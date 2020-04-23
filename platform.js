@@ -5,9 +5,8 @@ export default class Platform {
         this.r = this.r;
         this.g = this.g;
         this.b = this.b;
-        this.width = 800;
-        this.height = 100;
-        this.scrollSpeed = 5;
+        this.platformScrollLeft = false;
+        this.platformScrollRight = false;
         this.block = {
             width: 40,
             height: 40,
@@ -49,7 +48,9 @@ export default class Platform {
                         break;
                     case 1: // Grass
                         ctx.fillStyle = "#005c06";
-                        ctx.fillRect(this.basePosition.x + this.block.width * j, this.basePosition.y + this.block.height * i, this.block.width, this.block.height);
+                        ctx.fillRect(this.basePosition.x + this.block.width * j, this.basePosition.y + this.block.height * i, this.block.width, this.block.height / 10);
+                        ctx.fillStyle = "#5c2b00";
+                        ctx.fillRect(this.basePosition.x + this.block.width * j, this.basePosition.y + (this.block.height / 10) + this.block.height * i, this.block.width, this.block.height);
                         break;
                     case 0: // Air/Invisible
                         ctx.fillStyle = "rgba(0, 0, 0, 0)";
@@ -61,11 +62,11 @@ export default class Platform {
     }
 
     scrollLeft(ctx) {
-        this.basePosition.x += this.scrollSpeed;
+        // Maybe animate background?
     }
 
     scrollRight(ctx) {
-        this.basePosition.x -= this.scrollSpeed;
+        // Maybe animate background?
     }
 
     update(deltaTime) {
