@@ -5,8 +5,8 @@ export default class Sprite {
         this.dX = 5;
         this.dY = 70;
         this.gravity = 3;
-        this.width = 20;
-        this.height = 50;
+        this.width = 28;
+        this.height = 70;
         this.position = {
             x: 250,
             y: 300,
@@ -14,29 +14,36 @@ export default class Sprite {
 
         this.sprite = new Image();
         this.sprite.src = "images/spritesheet.png";
+        this.srcX = 0;
+        this.srcY = 0;
         this.spritesheetWidth = 112;
         this.spritesheetHeight = 70;
         this.spriteWidth = 28;
-        this.totalNumberOfFrames = 4;
-        this.imageFrameNumber = 0;
+        this.totalFrames = 4;
+        this.currentFrame = 0;
     }
 
-    displaySprite(ctx) {
-        sprite.onload = function() {
-                setInterval(function() {
-                    ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
+    updateFrame() {
+        this.currentFrame = ++this.currentFrame % this.totalFrames;
+        this.srcX = this.currentFrame * this.spriteWidth;
+        this.srcY = 0;
+    }
 
-                    this.imageFrameNumber++;
-                    this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFrames;
-
-                    ctx.drawImage(sprite, this.imageFrameNumber * this.spriteWidth,
-                        0, this.spriteWidth, this.spritesheetHeight, this.position.x,
-                        this.position.y, this.spriteWidth, this.spritesheetHeight);
-                }, 100)
-        }
+    drawSprite(ctx) {
+        this.updateFrame();
+        ctx.drawImage(this.sprite, this.srcX, this.srcY, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
+        
         this.position.y += this.gravity;
         if (this.position.y >= this.gameHeight - 80 - this.height) {
             this.position.y = 470;
+        }
+    }
+
+    displaySprite(ctx) {
+        setInterval(this.drawSprite(ctx), 500000);
+        this.position.y += this.gravity;
+        if (this.position.y >= this.gameHeight - 80 - 70) {
+            this.position.y = 450;
         }
     }
 
@@ -50,16 +57,6 @@ export default class Sprite {
 
     jump(ctx) {
         this.position.y -= this.dY;
-    }
-
-    display(ctx) {
-        ctx.fillStyle = "purple";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-        // ctx.drawImage(img, this.position.x, this.position.y);
-        this.position.y += this.gravity;
-        if (this.position.y >= this.gameHeight - 80 - this.height) {
-            this.position.y = 470;
-        }
     }
 
     update(deltaTime) {

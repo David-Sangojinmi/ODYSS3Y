@@ -98,8 +98,8 @@ function gamePlay(timestamp) {
     gStats.display(ctx);
     coinS.displayCoins(ctx);
 
+    sprite.displaySprite(ctx);
     sprite.update(deltaTime);
-    sprite.display(ctx, deltaTime);
 
     coinCollision();
 
