@@ -116,13 +116,7 @@ function loop() {
         sprite.dX -= 0.5;
     }
     if (controller.right) {
-        // if (sprite.position.x + 28 >= 550) {
-        //     platform.basePosition.x -= 0.5;
-        // } else {
-        //     sprite.dX += 0.5;
-        // }
         sprite.dX += 0.5;
-        
     }
 
     sprite.dY += 1.5; // Gravity
@@ -130,21 +124,21 @@ function loop() {
     sprite.dX *= 0.9; // Friction
     sprite.dY *= 0.9; // Friction
 
-    if (sprite.position.y > GAME_HEIGHT - 80 - 70) { // Sprite falling below floor
+    if (sprite.position.y >= GAME_HEIGHT - 80 - 90) { // Sprite falling below floor
         sprite.jumping = false;
-        sprite.position.y = GAME_HEIGHT - 80 - 70;;
+        sprite.position.y = GAME_HEIGHT - 80 - 90;
         sprite.dY = 0;
     }
 
-    if (sprite.position.x + sprite.width > 550) {
-        //sprite.position.x--;
+    if (sprite.position.x + sprite.width > 550) { // Scroll left
         platform.basePosition.x -= sprite.dX;
+        sprite.position.x = 530;
     }
-    if (sprite.position.x < 250) {
-        //sprite.position.x++;
+    if (sprite.position.x < 250) { // Scroll Right
         platform.basePosition.x -= sprite.dX;
+        sprite.position.x = 250;
     }
-    if (sprite.position.x >= 250 && sprite.position.x <= 550) {
+    if (sprite.position.x >= 250 && sprite.position.x <= 550) { // Sprite moving
         sprite.position.x += sprite.dX;
     }
 };
