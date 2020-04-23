@@ -47,14 +47,17 @@ var controller = {
 
         switch (event.keyCode) {
             case 37:
+            case 65:
                 controller.left = key_state;
-                break;
+            break;
             case 38:
+            case 87:
                 controller.up = key_state;
-                break;
+            break;
             case 39:
+            case 68:
                 controller.right = key_state;
-                break;
+            break;
         }
     }
 };
@@ -106,18 +109,23 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 20;
+        sprite.dY -= 30;
         sprite.jumping = true;
     }
     if (controller.left) {
         sprite.dX -= 0.5;
     }
     if (controller.right) {
+        // if (sprite.position.x + 28 >= 550) {
+        //     platform.basePosition.x -= 0.5;
+        // } else {
+        //     sprite.dX += 0.5;
+        // }
         sprite.dX += 0.5;
+        
     }
 
     sprite.dY += 1.5; // Gravity
-    sprite.position.x += sprite.dX;
     sprite.position.y += sprite.dY;
     sprite.dX *= 0.9; // Friction
     sprite.dY *= 0.9; // Friction
@@ -128,8 +136,17 @@ function loop() {
         sprite.dY = 0;
     }
 
-    // if () {         If going off the
-    // }               side of the screen
+    if (sprite.position.x + sprite.width > 550) {
+        //sprite.position.x--;
+        platform.basePosition.x -= sprite.dX;
+    }
+    if (sprite.position.x < 250) {
+        //sprite.position.x++;
+        platform.basePosition.x -= sprite.dX;
+    }
+    if (sprite.position.x >= 250 && sprite.position.x <= 550) {
+        sprite.position.x += sprite.dX;
+    }
 };
 
 function gamePlay(timestamp) {
@@ -195,9 +212,10 @@ document.addEventListener("click", (pauseevnt) => {
     }
 });
 
-////////////
+// For sprite movement and scrolling //
 document.addEventListener("keydown", controller.keyListener);
 document.addEventListener("keyup", controller.keyListener);
+
 // document.addEventListener("keydown", (event) => {
 //     if (gameplay === true && gamepaused === false) {
 //         switch (event.code) {
@@ -219,11 +237,6 @@ document.addEventListener("keyup", controller.keyListener);
 //                     sprite.moveRight();
 //                 }
 //                 break;
-//             case "ArrowUp":
-//             case "KeyW":
-//                 sprite.jump(ctx);
-//                 break;
-//         }
 //     }
 // });
 
