@@ -20,11 +20,9 @@ import gameScreens from "./gameScreens.js";
 import gameStats from "./gameStats.js";
 import Coin from "./coins.js";
 
-// Load all the images
+// Load any images
 var background = new Image();
-//     var player = new Image();
 background.src = "images/bg6-3.jpg";
-//     player.src = "images/sprite.jpg";
 
 // Load audio
 //     var jumpS = new Audio();
@@ -98,7 +96,7 @@ function gamePlay(timestamp) {
     gStats.display(ctx);
     coinS.displayCoins(ctx);
 
-    sprite.displaySprite(ctx);
+    setInterval(sprite.displaySprite(ctx), 900);
     sprite.update(deltaTime);
 
     coinCollision();
@@ -107,7 +105,7 @@ function gamePlay(timestamp) {
 }
 
 function gamePaused() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillStyle = "rgba(100, 100, 100, 0.7)";
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     // Draw resume button
     ctx.fillStyle = "rgb(0, 200, 0)";
@@ -151,7 +149,7 @@ document.addEventListener("click", (pauseevnt) => {
 document.addEventListener("keydown", (event) => {
     if (gameplay === true && gamepaused === false) {
         if (event.code === "ArrowLeft" || event.code === "KeyA") {
-            if (sprite.position.x <= 100) {
+            if (sprite.position.x <= 250) {
                 platform.scrollLeft();
                 coinS.scrollLeft();
             } else {
@@ -160,7 +158,7 @@ document.addEventListener("keydown", (event) => {
             // gStats.coinX += 5;
         }
         if (event.code === "ArrowRight" || event.code === "KeyD") {
-            if (sprite.position.x + 20 >= 700) {
+            if (sprite.position.x + 20 >= 550) {
                 platform.scrollRight();
                 coinS.scrollRight();
             } else {
@@ -175,7 +173,18 @@ document.addEventListener("keydown", (event) => {
 });
 
 function gameEnd() {
-    //////
+    ctx.drawImage(background, 0, 0);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.87)";
+    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    // Draw resume button
+    ctx.fillStyle = "rgb(0, 200, 0)";
+    ctx.fillRect(300, 150, 200, 100);
+    ctx.fillRect(300, 350, 200, 100);
+
+    sprite.displaySprite(ctx);
+    //sprite.update(deltaTime);
+
+    window.requestAnimationFrame(gameEnd);
 }
 
 ///////////////////////////////
@@ -196,4 +205,5 @@ function gameLoop() {
     }
 }
 
-gameLoop();
+//gameLoop();
+gameEnd();

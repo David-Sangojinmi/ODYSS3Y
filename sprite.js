@@ -4,7 +4,7 @@ export default class Sprite {
         this.gameHeight = gameHeight;
         this.dX = 5;
         this.dY = 70;
-        this.gravity = 3;
+        this.gravity = 1;
         this.width = 28;
         this.height = 70;
         this.position = {
@@ -32,15 +32,10 @@ export default class Sprite {
     drawSprite(ctx) {
         this.updateFrame();
         ctx.drawImage(this.sprite, this.srcX, this.srcY, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
-        
-        this.position.y += this.gravity;
-        if (this.position.y >= this.gameHeight - 80 - this.height) {
-            this.position.y = 470;
-        }
     }
 
     displaySprite(ctx) {
-        setInterval(this.drawSprite(ctx), 500000);
+        this.drawSprite(ctx);
         this.position.y += this.gravity;
         if (this.position.y >= this.gameHeight - 80 - 70) {
             this.position.y = 450;
