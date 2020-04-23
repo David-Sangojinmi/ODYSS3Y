@@ -148,26 +148,29 @@ document.addEventListener("click", (pauseevnt) => {
 
 document.addEventListener("keydown", (event) => {
     if (gameplay === true && gamepaused === false) {
-        if (event.code === "ArrowLeft" || event.code === "KeyA") {
-            if (sprite.position.x <= 250) {
-                platform.scrollLeft();
-                coinS.scrollLeft();
-            } else {
-                sprite.moveLeft();
-            }
-            // gStats.coinX += 5;
-        }
-        if (event.code === "ArrowRight" || event.code === "KeyD") {
-            if (sprite.position.x + 20 >= 550) {
-                platform.scrollRight();
-                coinS.scrollRight();
-            } else {
-                sprite.moveRight();
-            }
-            // gStats.coinX -= 5;
-        }
-        if (event.code === "ArrowUp" || event.code === "KeyW") {
-            sprite.jump(ctx);
+        switch (event.code) {
+            case "ArrowLeft":
+            case "KeyA":
+                if (sprite.position.x <= 250) {
+                    platform.scrollLeft();
+                    coinS.scrollLeft();
+                } else {
+                    sprite.moveLeft();
+                }
+                break;
+            case "ArrowRight":
+            case "KeyD":
+                if (sprite.position.x + 20 >= 550) {
+                    platform.scrollRight();
+                    coinS.scrollRight();
+                } else {
+                    sprite.moveRight();
+                }
+                break;
+            case "ArrowUp":
+            case "KeyW":
+                sprite.jump(ctx);
+                break;
         }
     }
 });
@@ -180,9 +183,6 @@ function gameEnd() {
     ctx.fillStyle = "rgb(0, 200, 0)";
     ctx.fillRect(300, 150, 200, 100);
     ctx.fillRect(300, 350, 200, 100);
-
-    sprite.displaySprite(ctx);
-    //sprite.update(deltaTime);
 
     window.requestAnimationFrame(gameEnd);
 }
@@ -205,5 +205,5 @@ function gameLoop() {
     }
 }
 
-//gameLoop();
-gameEnd();
+gameLoop();
+// gameEnd();

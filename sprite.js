@@ -21,24 +21,35 @@ export default class Sprite {
         this.spriteWidth = 28;
         this.totalFrames = 4;
         this.currentFrame = 0;
+        this.fpsCount = 0;
+        this.scale = 1.3;
     }
 
     updateFrame() {
-        this.currentFrame = ++this.currentFrame % this.totalFrames;
+        this.fpsCount++;
+        if (this.fpsCount % 15 == 0) {
+            this.currentFrame = ++this.currentFrame % this.totalFrames;
+        }
+        // this.fpsCount = 0;
+        // this.currentFrame = ++this.currentFrame % this.totalFrames;
         this.srcX = this.currentFrame * this.spriteWidth;
         this.srcY = 0;
     }
 
     drawSprite(ctx) {
         this.updateFrame();
-        ctx.drawImage(this.sprite, this.srcX, this.srcY, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
+        ctx.drawImage(this.sprite, this.srcX, this.srcY,
+            this.spriteWidth, this.spritesheetHeight,
+            this.position.x, this.position.y,
+            this.spriteWidth * this.scale,
+            this.spritesheetHeight * this.scale);
     }
 
     displaySprite(ctx) {
         this.drawSprite(ctx);
         this.position.y += this.gravity;
-        if (this.position.y >= this.gameHeight - 80 - 70) {
-            this.position.y = 450;
+        if (this.position.y >= this.gameHeight - 80 - (this.height * this.scale)) {
+            this.position.y = this.gameHeight - 80 - this.height * this.scale;
         }
     }
 
