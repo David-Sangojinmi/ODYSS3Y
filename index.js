@@ -48,7 +48,7 @@ var controller = {
 
         switch (event.keyCode) {
             case 37:
-                controller.left = key_sate;
+                controller.left = key_state;
                 break;
             case 38:
                 controller.up = key_state;
@@ -105,7 +105,7 @@ function coinCollision() {
     }
 }
 
-loop = function () {
+function loop() {
     if (controller.up && sprite.jumping == false) {
         sprite.dY -= 20;
         sprite.jumping = true;
@@ -145,6 +145,7 @@ function gamePlay(timestamp) {
     coinS.displayCoins(ctx);
 
     sprite.displaySprite(ctx);
+    loop();
     sprite.update(deltaTime);
 
     coinCollision();
@@ -196,7 +197,7 @@ document.addEventListener("click", (pauseevnt) => {
 });
 
 ////////////
-document.addEventListener("Keydown", controller.keyListener);
+document.addEventListener("keydown", controller.keyListener);
 document.addEventListener("keyup", controller.keyListener);
 // document.addEventListener("keydown", (event) => {
 //     if (gameplay === true && gamepaused === false) {
