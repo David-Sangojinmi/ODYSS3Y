@@ -113,7 +113,7 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 35;
+        sprite.dY -= 26;  // Jumping higher
         sprite.jumping = true;
     }
     if (controller.left) {
@@ -123,7 +123,7 @@ function loop() {
         sprite.dX += 0.5;
     }
 
-    sprite.dY += 1.5; // Gravity
+    sprite.dY += 1; // Gravity - come down slower or quicker
     sprite.position.y += sprite.dY;
     sprite.dX *= 0.9; // Friction
     sprite.dY *= 0.9; // Friction
