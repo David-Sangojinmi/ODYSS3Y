@@ -128,6 +128,12 @@ function loop() {
     sprite.dX *= 0.9; // Friction
     sprite.dY *= 0.9; // Friction
 
+    /* Pseudocode for tile collision detection
+    - Loop through the array for generating tiles
+    - If sprite bottom y pos <= tile top y pos AND sprite left x pos <= tile right x pos AND sprite right x pos >= sprite left x pos THEN
+        - Sprite should not fall through the title
+    - ELSE
+        - Sprite should fall until it reaches a tile which the above is true */ 
     if (sprite.position.y >= GAME_HEIGHT - 80 - 90) { // Sprite falling below floor
         sprite.jumping = false;
         sprite.position.y = GAME_HEIGHT - 80 - 90;
@@ -135,18 +141,18 @@ function loop() {
     }
 
     if (sprite.position.x + sprite.width > 550) { // Scroll left
-        bg.pos.l1x -= sprite.dX * 0.2;
-        bg.pos.l2x -= sprite.dX * 0.4;
-        bg.pos.l3x -= sprite.dX * 0.6;
-        bg.pos.l4x -= sprite.dX * 0.8;
+        bg.posGP.l1x -= sprite.dX * 0.2;
+        bg.posGP.l2x -= sprite.dX * 0.4;
+        bg.posGP.l3x -= sprite.dX * 0.6;
+        bg.posGP.l4x -= sprite.dX * 0.8;
         platform.basePosition.x -= sprite.dX;
         sprite.position.x = 550 - sprite.width;
     }
     if (sprite.position.x < 250) { // Scroll Right
-        bg.pos.l1x -= sprite.dX * 0.2;
-        bg.pos.l2x -= sprite.dX * 0.4;
-        bg.pos.l3x -= sprite.dX * 0.6;
-        bg.pos.l4x -= sprite.dX * 0.8;
+        bg.posGP.l1x -= sprite.dX * 0.2;
+        bg.posGP.l2x -= sprite.dX * 0.4;
+        bg.posGP.l3x -= sprite.dX * 0.6;
+        bg.posGP.l4x -= sprite.dX * 0.8;
         platform.basePosition.x -= sprite.dX;
         sprite.position.x = 250;
     }
