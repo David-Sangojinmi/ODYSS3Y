@@ -127,17 +127,19 @@ function spriteCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 26; // Jumping higher
+        sprite.dY -= 14; // Jumping higher
         sprite.jumping = true;
     }
     if (controller.left) {
         sprite.dX -= 0.5;
+        sprite.movingLeft = true;
     }
     if (controller.right) {
         sprite.dX += 0.5;
+        sprite.movingRight = true;
     }
 
-    sprite.dY += 1; // Gravity - come down slower or quicker
+    sprite.dY += 0.9; // Gravity - come down slower or quicker
     sprite.position.y += sprite.dY;
     sprite.position.x += sprite.dX;
     sprite.position.y += sprite.dY;
