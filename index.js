@@ -113,16 +113,16 @@ function coinCollision() {
 }
 
 function spriteCollision() {
-    if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
-        sprite.position.x <= 480 - 5) {
-        spriteCol = true;
-    } else if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
-        sprite.position.x >= 600 - 24) {
-        spriteCol = true;
-    } else {
-        spriteCol = false;
-    }
-    return spriteCol;
+    // if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
+    //     sprite.position.x <= 480 - 5) {
+    //     spriteCol = true;
+    // } else if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
+    //     sprite.position.x >= 600 - 24) {
+    //     spriteCol = true;
+    // } else {
+    //     spriteCol = false;
+    // }
+    // return spriteCol;
 }
 
 function loop() {
@@ -151,8 +151,10 @@ function loop() {
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
 
-    spriteCollision();
-    if (spriteCol === true) {
+    
+    // spriteCollision();
+    
+    if (sprite.position.y >= GAME_HEIGHT - 80 - 90) {
         // Sprite falling below floor
         sprite.jumping = false;
         sprite.position.y = GAME_HEIGHT - 80 - 90;
@@ -171,7 +173,7 @@ function loop() {
     //     }
     // }
 
-    /* if (sprite.position.x + sprite.width > 550) {
+    if (sprite.position.x + sprite.width > 550) {
         // Scroll left
         gStats.hp -= 0.5;
         bg.posGP.l1x -= sprite.dX * 0.2;
@@ -193,7 +195,7 @@ function loop() {
     if (sprite.position.x >= 250 && sprite.position.x <= 550) {
         // Sprite moving
         sprite.position.x += sprite.dX;
-    } */
+    }
 }
 
 function gamePlay(timestamp) {
