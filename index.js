@@ -42,28 +42,29 @@ var gameplay = false;
 var gamepaused = false;
 var gameend = false;
 var lastTime = 0;
+var spriteCol = false;
 var controller = {
     left: false,
     right: false,
     up: false,
-    keyListener:function(event) {
-        var key_state = (event.type == "keydown")?true:false;
+    keyListener: function (event) {
+        var key_state = event.type == "keydown" ? true : false;
 
         switch (event.keyCode) {
             case 37:
             case 65:
                 controller.left = key_state;
-            break;
+                break;
             case 38:
             case 87:
                 controller.up = key_state;
-            break;
+                break;
             case 39:
             case 68:
                 controller.right = key_state;
-            break;
+                break;
         }
-    }
+    },
 };
 
 ///////////////////////////////
@@ -111,9 +112,22 @@ function coinCollision() {
     }
 }
 
+function spriteCollision() {
+    if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
+        sprite.position.x <= 480 - 5) {
+        spriteCol = true;
+    } else if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
+        sprite.position.x >= 600 - 24) {
+        spriteCol = true;
+    } else {
+        spriteCol = false;
+    }
+    return spriteCol;
+}
+
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 26;  // Jumping higher
+        sprite.dY -= 26; // Jumping higher
         sprite.jumping = true;
     }
     if (controller.left) {
@@ -125,6 +139,8 @@ function loop() {
 
     sprite.dY += 1; // Gravity - come down slower or quicker
     sprite.position.y += sprite.dY;
+    sprite.position.x += sprite.dX;
+    sprite.position.y += sprite.dY;
     sprite.dX *= 0.9; // Friction
     sprite.dY *= 0.9; // Friction
 
@@ -133,14 +149,31 @@ function loop() {
     - If sprite bottom y pos <= tile top y pos AND sprite left x pos <= tile right x pos AND sprite right x pos >= sprite left x pos THEN
         - Sprite should not fall through the title
     - ELSE
-        - Sprite should fall until it reaches a tile which the above is true */ 
-    if (sprite.position.y >= GAME_HEIGHT - 80 - 90) { // Sprite falling below floor
+        - Sprite should fall until it reaches a tile which the above is true */
+
+    spriteCollision();
+    if (spriteCol === true) {
+        // Sprite falling below floor
         sprite.jumping = false;
         sprite.position.y = GAME_HEIGHT - 80 - 90;
         sprite.dY = 0;
     }
+    // for (var i = 0; i < platform.level1.length; i++) {
+    //     for (var j = 0; j < platform.level1[i].length; j++) {
+    //         if (
+    //             sprite.y + 70 >= platform.basePosition.y + j*40 ||
+    //             sprite.x + 28 <= platform.basePosition.x + i*40 ||
+    //             sprite.x >= platform.basePosition.x + (i-1)*40) {
+    //                 sprite.jumping = false;
+    //                 sprite.position.y = GAME_HEIGHT - 70 - i*40;
+    //                 sprite.dY = 0;
+    //             }
+    //     }
+    // }
 
-    if (sprite.position.x + sprite.width > 550) { // Scroll left
+    /* if (sprite.position.x + sprite.width > 550) {
+        // Scroll left
+        gStats.hp -= 0.5;
         bg.posGP.l1x -= sprite.dX * 0.2;
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
@@ -148,7 +181,8 @@ function loop() {
         platform.basePosition.x -= sprite.dX;
         sprite.position.x = 550 - sprite.width;
     }
-    if (sprite.position.x < 250) { // Scroll Right
+    if (sprite.position.x < 250) {
+        // Scroll Right
         bg.posGP.l1x -= sprite.dX * 0.2;
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
@@ -156,10 +190,11 @@ function loop() {
         platform.basePosition.x -= sprite.dX;
         sprite.position.x = 250;
     }
-    if (sprite.position.x >= 250 && sprite.position.x <= 550) { // Sprite moving
+    if (sprite.position.x >= 250 && sprite.position.x <= 550) {
+        // Sprite moving
         sprite.position.x += sprite.dX;
-    }
-};
+    } */
+}
 
 function gamePlay(timestamp) {
     let deltaTime = timestamp - lastTime;
@@ -195,12 +230,7 @@ function gamePaused() {
 document.addEventListener("click", (evnt) => {
     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gameplay === true) {
-        if (
-            evnt.clientX >= 17 + winRect.left + 2 &&
-            evnt.clientX <= 17 + 34 + winRect.left + 2 &&
-            evnt.clientY >= 17 + winRect.top + 2 &&
-            evnt.clientY <= 17 + 35 + winRect.top + 2
-        ) {
+        if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
             gamepaused = true;
             gameplay = false;
             gameLoop();
@@ -211,12 +241,7 @@ document.addEventListener("click", (evnt) => {
 document.addEventListener("click", (pauseevnt) => {
     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gamepaused === true) {
-        if (
-            pauseevnt.clientX >= 300 + winRect.left + 2 &&
-            pauseevnt.clientX <= 500 + winRect.left + 2 &&
-            pauseevnt.clientY >= 150 + winRect.top + 2 &&
-            pauseevnt.clientY <= 250 + winRect.top + 2
-        ) {
+        if (pauseevnt.clientX >= 300 + winRect.left + 2 && pauseevnt.clientX <= 500 + winRect.left + 2 && pauseevnt.clientY >= 150 + winRect.top + 2 && pauseevnt.clientY <= 250 + winRect.top + 2) {
             gamepaused = false;
             gameplay = true;
             gameLoop();
