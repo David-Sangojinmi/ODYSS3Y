@@ -9,11 +9,11 @@ export default class Sprite {
             y: 300,
         };
 
-        // Physics
         this.jumping = true;
+        this.movingLeft = false;
+        this.movingRight = false;
         this.dX = 0;
         this.dY = 0;
-        //this.gravity = 10;
 
         // Animation
         this.sprite = new Image();
@@ -38,17 +38,19 @@ export default class Sprite {
         this.srcY = 0;
     }
 
-    drawSprite(ctx) {
+    drawIdleSprite(ctx) {
         this.updateFrame();
-        ctx.drawImage(this.sprite, this.srcX, this.srcY,
-            this.spriteWidth, this.spritesheetHeight,
-            this.position.x, this.position.y,
+        ctx.drawImage(
+            this.sprite,
+            this.srcX,
+            this.srcY,
+            this.spriteWidth,
+            this.spritesheetHeight,
+            this.position.x,
+            this.position.y,
             this.spriteWidth * this.scale,
-            this.spritesheetHeight * this.scale);
-    }
-
-    displaySprite(ctx) {
-        this.drawSprite(ctx);
+            this.spritesheetHeight * this.scale
+        );
     }
 
     drawMovingLeft(ctx) {
@@ -66,7 +68,7 @@ export default class Sprite {
         );
     }
 
-    drawMovingRight() {
+    drawMovingRight(ctx) {
         this.updateFrame();
         ctx.drawImage(
             this.sprite,
@@ -81,8 +83,26 @@ export default class Sprite {
         );
     }
 
-    drawJump(ctx) {
+    drawJumpingSprite(ctx) {
         // Draw jumping
+    }
+
+    displaySprite(ctx) {
+        if (this.jumping === false && this.movingLeft === false && this.movingRight === false) {
+            this.drawIdleSprite(ctx);
+        }
+        if (this.jumping === true) {
+            // this.drawJumpingSprite(ctx);
+            this.drawIdleSprite(ctx);
+        }
+        if (this.movingRight === true) {
+            // this.drawMovingRight(ctx);
+            this.drawIdleSprite(ctx);
+        }
+        if (this.movingLeft === true) {
+            // this.drawMovingRight(ctx);
+            this.drawIdleSprite(ctx);
+        }
     }
 
     update(deltaTime) {
