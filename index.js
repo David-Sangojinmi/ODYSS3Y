@@ -100,12 +100,13 @@ document.addEventListener("click", (ev) => {
 
 function coinCollision() {
     if (
-        sprite.position.x >= coinS.coinX &&
-        sprite.position.x + sprite.width <= coinS.coinX + coinS.coin.width &&
-        coinS.coinY > sprite.position.y &&
-        coinS.coinY + coinS.coin.height <= sprite.position.y + sprite.height
+        sprite.position.x >= coinS.baseX &&
+        sprite.position.x + sprite.width <= coinS.baseX + coinS.base.width &&
+        coinS.baseY > sprite.position.y &&
+        coinS.baseY + coinS.base.height <= sprite.position.y + sprite.height
     ) {
         gStats.points += 1;
+        coinS.coinShowing = false;
         //Coin.hide();
     } else {
         gStats.points += 0;
@@ -183,6 +184,7 @@ function loop() {
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
         platform.basePosition.x -= sprite.dX;
+        coinS.baseX -= sprite.dX;
         sprite.position.x = 550 - sprite.width;
     }
     if (sprite.position.x < 250) {
@@ -192,6 +194,7 @@ function loop() {
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
         platform.basePosition.x -= sprite.dX;
+        coinS.baseX -= sprite.dX;
         sprite.position.x = 250;
     }
     if (sprite.position.x >= 250 && sprite.position.x <= 550) {
@@ -207,15 +210,15 @@ function gamePlay(timestamp) {
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bg.gpdraw(ctx);
     platform.drawTerrain(ctx);
+    coinS.displayCoins(ctx);
     gStats.update(deltaTime);
     gStats.display(ctx);
-    coinS.displayCoins(ctx);
-
+    
     sprite.displaySprite(ctx);
     loop();
     sprite.update(deltaTime);
 
-    coinCollision();
+    // coinCollision();
 
     window.requestAnimationFrame(gamePlay);
 }
@@ -227,7 +230,7 @@ function gamePaused() {
     ctx.fillStyle = "rgb(0, 200, 0)";
     ctx.fillRect(300, 150, 200, 100);
     ctx.fillRect(300, 350, 200, 100);
-
+    sprite.fpsCount = 0;
     window.requestAnimationFrame(gamePaused);
 }
 
@@ -237,6 +240,7 @@ document.addEventListener("click", (evnt) => {
         if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
             gamepaused = true;
             gameplay = false;
+            
             gameLoop();
         }
     }
