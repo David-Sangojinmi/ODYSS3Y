@@ -6,6 +6,8 @@ Sprite sheets:
 To-Do:
     - Better player terrain interaction
     - Fix the bug with the pause button
+    - Make each terrain tile an object
+        > And then try rewriting the collision logic
 */
 
 var cvs = document.getElementById("gameScreen");
@@ -99,18 +101,30 @@ document.addEventListener("click", (ev) => {
 });
 
 function coinCollision() {
-    if (
-        sprite.position.x >= coinS.baseX &&
-        sprite.position.x + sprite.width <= coinS.baseX + coinS.base.width &&
-        coinS.baseY > sprite.position.y &&
-        coinS.baseY + coinS.base.height <= sprite.position.y + sprite.height
-    ) {
-        gStats.points += 1;
-        coinS.coinShowing = false;
-        //Coin.hide();
-    } else {
-        gStats.points += 0;
+    for (var i = 0; i < coinS.coinlevel1.length; i++) {
+        for (var j = 0; j < coinS.coinlevel1[i].length; j++) {
+            if (coinS.coinlevel1[i][j] === 4) {
+                if (sprite.position.y <= coinS.baseY + j*40 &&
+                    sprite.position.y >= coinS.baseY + (j+1)*40 - 5) {
+                        gStats.points += 1;
+                        coinS.coinShowing = false;
+                    } else {
+                        gStats.points += 0;
+                    }
+            }
+        }
     }
+    // if (
+    //     sprite.position.x >= coinS.baseX &&
+    //     sprite.position.x + sprite.width <= coinS.baseX + coinS.base.width &&
+    //     coinS.baseY > sprite.position.y &&
+    //     coinS.baseY + coinS.base.height <= sprite.position.y + sprite.height
+    // ) {
+        
+    //     //Coin.hide();
+    // } else {
+        
+    // }
 }
 
 function spriteCollision() {
