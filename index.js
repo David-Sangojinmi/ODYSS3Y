@@ -127,19 +127,6 @@ function coinCollision() {
     // }
 }
 
-function spriteCollision() {
-    // if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
-    //     sprite.position.x <= 480 - 5) {
-    //     spriteCol = true;
-    // } else if (sprite.position.y >= GAME_HEIGHT - 80 - 90 &&
-    //     sprite.position.x >= 600 - 24) {
-    //     spriteCol = true;
-    // } else {
-    //     spriteCol = false;
-    // }
-    // return spriteCol;
-}
-
 function loop() {
     if (controller.up && sprite.jumping == false) {
         sprite.dY -= 14; // Jumping higher
@@ -167,9 +154,6 @@ function loop() {
         - Sprite should not fall through the title
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
-
-    
-    // spriteCollision();
     
     if (sprite.position.y >= GAME_HEIGHT - 80 - 90) {
         // Sprite falling below floor
