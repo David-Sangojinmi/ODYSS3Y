@@ -40,7 +40,7 @@ var block = new Array(900);
 var k = 0;
 for (var i = 0; i < platform.level1.length; i++) {
     for (var j = 0; j < platform.level1[i].length; j++) {
-        block[k] = new Block(i * 40, j * 40, 40, 40, platform.level1[i][j]);
+        block[k] = new Block(j * 40, i * 40, 40, 40, platform.level1[i][j]);
         k++;
         // switch (platform.level1[i][j]) {
         //     case 1:
@@ -169,10 +169,10 @@ function loop() {
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
     
-    if (sprite.position.y >= GAME_HEIGHT - 80 - 90) {
+    if (sprite.position.y >= block[720].y) {
         // Sprite falling below floor
         sprite.jumping = false;
-        sprite.position.y = GAME_HEIGHT - 80 - 90;
+        sprite.position.y = block[720].y;
         sprite.dY = 0;
     }
     // for (var i = 0; i < platform.level1.length; i++) {
@@ -195,7 +195,9 @@ function loop() {
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
-        platform.basePosition.x -= sprite.dX;
+        for (var i = 0; i < block.length; i++) {
+            block[i].x -= sprite.dX;
+        }
         coinS.baseX -= sprite.dX;
         sprite.position.x = 550 - sprite.width;
     }
@@ -205,7 +207,9 @@ function loop() {
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
-        platform.basePosition.x -= sprite.dX;
+        for (var i = 0; i < block.length; i++) {
+            block[i].x -= sprite.dX;
+        }
         coinS.baseX -= sprite.dX;
         sprite.position.x = 250;
     }
@@ -221,10 +225,9 @@ function gamePlay(timestamp) {
 
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bg.gpdraw(ctx);
-    // for (var i = 0; i < block.length; i++) {
-    //     block[i].drawBlock(ctx);
-    // }
-    block[1].drawBlock(ctx);
+    for (var i = 0; i < block.length; i++) {
+        block[i].drawBlock(ctx);
+    }
     // platform.drawTerrain(ctx);
     coinS.displayCoins(ctx);
     gStats.update(deltaTime);
