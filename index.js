@@ -23,6 +23,7 @@ import Background from "./background.js";
 import gameScreens from "./gameScreens.js";
 import gameStats from "./gameStats.js";
 import Coin from "./coins.js";
+import Block from "./block.js";
 
 // Load any images
 var background = new Image();
@@ -35,6 +36,19 @@ background.src = "images/bg6-3.jpg";
 // Important variables
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
 let platform = new Platform(GAME_WIDTH, GAME_HEIGHT);
+var block = new Array(900);
+var k = 0;
+for (var i = 0; i < platform.level1.length; i++) {
+    for (var j = 0; j < platform.level1[i].length; j++) {
+        block[k] = new Block(i * 40, j * 40, 40, 40, platform.level1[i][j]);
+        k++;
+        // switch (platform.level1[i][j]) {
+        //     case 1:
+        //         block[i] = new Block(i * 40, j * 40, 40, 40, 1);
+        //         break;
+        // }
+    }
+}
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
 let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
@@ -207,7 +221,11 @@ function gamePlay(timestamp) {
 
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bg.gpdraw(ctx);
-    platform.drawTerrain(ctx);
+    // for (var i = 0; i < block.length; i++) {
+    //     block[i].drawBlock(ctx);
+    // }
+    block[1].drawBlock(ctx);
+    // platform.drawTerrain(ctx);
     coinS.displayCoins(ctx);
     gStats.update(deltaTime);
     gStats.display(ctx);
