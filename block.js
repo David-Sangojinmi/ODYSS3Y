@@ -35,4 +35,8 @@ export default class Block {
                 break;
         }
     }
+
+    active(ctx) {
+        ctx.strokeRect(this.x, this.y, this.w, this.h);
+    }
 }
