@@ -11,11 +11,11 @@ export default class Platform {
             width: 40,
             height: 40,
         };
-        this.terrainset = new Image();
-        this.terrainset.src = "images/terrainset.png";
-        this.terrainScale = 2.5;
+        // this.terrainset = new Image();
+        // this.terrainset.src = "images/terrainset.png";
+        // this.terrainScale = 2.5;
         this.level1 = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -37,57 +37,57 @@ export default class Platform {
         };
     }
 
-    drawTerrain(ctx) {
-        for (var i = 0; i < this.level1.length; i++) {
-            for (var j = 0; j < this.level1[i].length; j++) {
-                switch (this.level1[i][j]) {
-                    case 3: // In air block
-                        ctx.drawImage(
-                            this.terrainset,
-                            48,
-                            80,
-                            16,
-                            16,
-                            this.basePosition.x + this.block.width * j,
-                            this.basePosition.y + this.block.height * i,
-                            16 * this.terrainScale,
-                            16 * this.terrainScale
-                        );
-                        break;
-                    case 2: // Moddle ground block
-                        ctx.drawImage(
-                            this.terrainset,
-                            160,
-                            96,
-                            16,
-                            16,
-                            this.basePosition.x + this.block.width * j,
-                            this.basePosition.y + this.block.height * i,
-                            16 * this.terrainScale,
-                            16 * this.terrainScale
-                        );
-                        break;
-                    case 1: // Top ground block
-                        ctx.drawImage(
-                            this.terrainset,
-                            160,
-                            80,
-                            16,
-                            16,
-                            this.basePosition.x + this.block.width * j,
-                            this.basePosition.y + this.block.height * i,
-                            16 * this.terrainScale,
-                            16 * this.terrainScale
-                        );
-                        break;
-                    case 0: // Air/Invisible
-                        ctx.fillStyle = "rgba(0, 0, 0, 0)";
-                        ctx.fillRect(this.basePosition.x + this.block.width * j, this.basePosition.y + this.block.height * i, this.block.width, this.block.height);
-                        break;
-                }
-            }
-        }
-    }
+    // drawTerrain(ctx) {
+    //     for (var i = 0; i < this.level1.length; i++) {
+    //         for (var j = 0; j < this.level1[i].length; j++) {
+    //             switch (this.level1[i][j]) {
+    //                 case 3: // In air block
+    //                     ctx.drawImage(
+    //                         this.terrainset,
+    //                         48,
+    //                         80,
+    //                         16,
+    //                         16,
+    //                         this.basePosition.x + this.block.width * j,
+    //                         this.basePosition.y + this.block.height * i,
+    //                         16 * this.terrainScale,
+    //                         16 * this.terrainScale
+    //                     );
+    //                     break;
+    //                 case 2: // Moddle ground block
+    //                     ctx.drawImage(
+    //                         this.terrainset,
+    //                         160,
+    //                         96,
+    //                         16,
+    //                         16,
+    //                         this.basePosition.x + this.block.width * j,
+    //                         this.basePosition.y + this.block.height * i,
+    //                         16 * this.terrainScale,
+    //                         16 * this.terrainScale
+    //                     );
+    //                     break;
+    //                 case 1: // Top ground block
+    //                     ctx.drawImage(
+    //                         this.terrainset,
+    //                         160,
+    //                         80,
+    //                         16,
+    //                         16,
+    //                         this.basePosition.x + this.block.width * j,
+    //                         this.basePosition.y + this.block.height * i,
+    //                         16 * this.terrainScale,
+    //                         16 * this.terrainScale
+    //                     );
+    //                     break;
+    //                 case 0: // Air/Invisible
+    //                     ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    //                     ctx.fillRect(this.basePosition.x + this.block.width * j, this.basePosition.y + this.block.height * i, this.block.width, this.block.height);
+    //                     break;
+    //             }
+    //         }
+    //     }
+    // }
 
     scrollLeft(ctx) {
         // Maybe animate background?
