@@ -118,19 +118,19 @@ function gameInstructions(timestamp) {
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bg.gsdraw(ctx);
     gScreens.update(deltaTime);
-    gScreens.instructions(ctx);
+    gScreens.gameInstructions(ctx);
 
-    window.requestAnimationFrame(gameStart);
+    window.requestAnimationFrame(gameInstructions);
 }
 
-document.addEventListener("click", (instrev) => {
+document.addEventListener("click", (instructionsev) => {
     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gameinstructions === true) {
         if (
-            instrev.clientX >= 336 + winRect.left + 2 &&
-            instrev.clientX <= 336 + gScreens.playBtn1.width + winRect.left + 2 &&
-            instrev.clientY >= 352 + winRect.top + 2 &&
-            instrev.clientY <= 352 + gScreens.playBtn1.height + winRect.top + 2
+            instructionsev.clientX >= 336 + winRect.left + 2 &&
+            instructionsev.clientX <= 336 + gScreens.playBtn1.width + winRect.left + 2 &&
+            instructionsev.clientY >= 352 + winRect.top + 2 &&
+            instructionsev.clientY <= 352 + gScreens.playBtn1.height + winRect.top + 2
         ) {
             gamestart = false;
             gameinstructions = false;
@@ -328,4 +328,3 @@ function gameLoop() {
 }
 
 gameLoop();
-// gameEnd();
