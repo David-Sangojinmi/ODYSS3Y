@@ -36,17 +36,12 @@ background.src = "images/bg6-3.jpg";
 // Important variables
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
 let platform = new Platform(GAME_WIDTH, GAME_HEIGHT);
-var block = new Array(900);
-var k = 0;
+var block = [];
+var blockCount = 0;
 for (var i = 0; i < platform.level1.length; i++) {
     for (var j = 0; j < platform.level1[i].length; j++) {
-        block[k] = new Block(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        k++;
-        // switch (platform.level1[i][j]) {
-        //     case 1:
-        //         block[i] = new Block(i * 40, j * 40, 40, 40, 1);
-        //         break;
-        // }
+        block[blockCount] = new Block(j * 40, i * 40, 40, 40, platform.level1[i][j]);
+        blockCount++;
     }
 }
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
@@ -169,24 +164,12 @@ function loop() {
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
     
-    if (sprite.position.y >= block[720].y) {
+    if (sprite.position.y >= block[780].y - 70) {
         // Sprite falling below floor
         sprite.jumping = false;
-        sprite.position.y = block[720].y;
+        sprite.position.y = block[780].y - 70;
         sprite.dY = 0;
     }
-    // for (var i = 0; i < platform.level1.length; i++) {
-    //     for (var j = 0; j < platform.level1[i].length; j++) {
-    //         if (
-    //             sprite.y + 70 >= platform.basePosition.y + j*40 ||
-    //             sprite.x + 28 <= platform.basePosition.x + i*40 ||
-    //             sprite.x >= platform.basePosition.x + (i-1)*40) {
-    //                 sprite.jumping = false;
-    //                 sprite.position.y = GAME_HEIGHT - 70 - i*40;
-    //                 sprite.dY = 0;
-    //             }
-    //     }
-    // }
 
     if (sprite.position.x + sprite.width > 550) {
         // Scroll left
@@ -228,7 +211,7 @@ function gamePlay(timestamp) {
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
     }
-    // platform.drawTerrain(ctx);
+    block[780].active(ctx);
     coinS.displayCoins(ctx);
     gStats.update(deltaTime);
     gStats.display(ctx);
