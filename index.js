@@ -49,6 +49,7 @@ let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
 let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
 let coinS = new Coin();
 var gamestart = true;
+var gameinstructions = false;
 var gameplay = false;
 var gamepaused = false;
 var gameend = false;
@@ -98,11 +99,41 @@ document.addEventListener("click", (ev) => {
     if (gamestart === true) {
         if (
             ev.clientX >= 336 + winRect.left + 2 &&
-            ev.clientX <= 336 + gScreens.play.width + winRect.left + 2 &&
+            ev.clientX <= 336 + gScreens.playBtn1.width + winRect.left + 2 &&
             ev.clientY >= 452 + winRect.top + 2 &&
-            ev.clientY <= 452 + gScreens.play.height + winRect.top + 2
+            ev.clientY <= 452 + gScreens.playBtn1.height + winRect.top + 2
         ) {
             gamestart = false;
+            gameinstructions = true;
+            gameplay = false;
+            gameLoop();
+        }
+    }
+});
+
+function gameInstructions(timestamp) {
+    let deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    bg.gsdraw(ctx);
+    gScreens.update(deltaTime);
+    gScreens.instructions(ctx);
+
+    window.requestAnimationFrame(gameStart);
+}
+
+document.addEventListener("click", (instrev) => {
+    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    if (gameinstructions === true) {
+        if (
+            instrev.clientX >= 336 + winRect.left + 2 &&
+            instrev.clientX <= 336 + gScreens.playBtn1.width + winRect.left + 2 &&
+            instrev.clientY >= 352 + winRect.top + 2 &&
+            instrev.clientY <= 352 + gScreens.playBtn1.height + winRect.top + 2
+        ) {
+            gamestart = false;
+            gameinstructions = false;
             gameplay = true;
             gameLoop();
         }
@@ -164,10 +195,10 @@ function loop() {
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
     
-    if (sprite.position.y >= block[780].y - 70) {
+    if (sprite.position.y >= block[780].y - sprite.height - 20) {
         // Sprite falling below floor
         sprite.jumping = false;
-        sprite.position.y = block[780].y - 70;
+        sprite.position.y = block[780].y - sprite.height - 20;
         sprite.dY = 0;
     }
 
@@ -281,6 +312,9 @@ function gameEnd() {
 function gameLoop() {
     if (gamestart == true) {
         gameStart();
+    }
+    if (gameinstructions == true) {
+        gameInstructions();
     }
     if (gameplay == true) {
         gamePlay();
