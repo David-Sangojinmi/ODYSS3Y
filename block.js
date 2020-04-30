@@ -36,7 +36,9 @@ export default class Block {
         }
     }
 
-    active(ctx) {
-        ctx.strokeRect(this.x, this.y, this.w, this.h);
+    active(ctx, blockNum) {
+        ctx.font = "15px arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(blockNum, this.x + 8, this.y + 25);
     }
 }
