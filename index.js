@@ -153,7 +153,7 @@ document.addEventListener("click", (instructionsev) => {
 
 function coinCollision() {
     for (var i = 0; i < block.length; i++) {
-        if (block[i].id === 9 || block[i].id === 10) {
+        if (block[i].id === 9) {
             if (
                 sprite.position.x >= block[i].x - 27 &&
                 sprite.position.x <= block[i].x + 33 + 5 &&
@@ -163,6 +163,17 @@ function coinCollision() {
             ) {
                 block[i].coinActive = false;
                 gStats.points += 1;
+            }
+        } else if (block[i].id === 10) {
+            if (
+                sprite.position.x >= block[i].x - 27 &&
+                sprite.position.x <= block[i].x + 33 + 5 &&
+                block[i].y >= sprite.position.y - 33 - 5 &&
+                block[i].y <= sprite.position.y + 70 &&
+                block[i].coinActive === true
+            ) {
+                block[i].coinActive = false;
+                gStats.points += 3;
             }
         }
     }
@@ -234,6 +245,15 @@ function loop() {
         sprite.jumping = false;
         sprite.position.y = block[712].y - sprite.height - 20;
         sprite.dY = 0;
+    } else if (
+        sprite.position.y >= block[682].y - sprite.height - 20 &&
+        sprite.position.y <= block[742].y - sprite.height - 35 &&
+        sprite.position.x >= block[682].x - 1 - 28 &&
+        sprite.position.x <= block[687].x - 8
+    ) {
+        sprite.jumping = false;
+        sprite.position.y = block[682].y - sprite.height - 20;
+        sprite.dY = 0;
     }
 
     if (sprite.position.x + sprite.width > 550) {
@@ -276,7 +296,7 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
-        block[i].active(ctx, i);
+        // block[i].active(ctx, i);
     }
     gStats.update(deltaTime);
     gStats.display(ctx);
