@@ -5,6 +5,10 @@ Terrain tile set:
 Sprite sheets: 
 To-Do:
     [X] Better player terrain interaction
+    [ ] Animate player moving left/right and jump
+    [ ] Allow recognition for which type of collision is happening (l/r/u/d)
+    [ ] Player shouldn't be able to double jump through platforms
+    [ ] Player should lose hp when he falls in ditches
     [~] Fix the bug with the pause button
         [X] Removed pause button for now
     [X] Make each terrain tile an object
@@ -18,13 +22,13 @@ var GAME_HEIGHT = 600;
 var winRect = cvs.getBoundingClientRect();
 
 // Importing the classes needed
-import Platform from "./platform.js";
-import Sprite from "./sprite.js";
-import Background from "./background.js";
-import gameScreens from "./gameScreens.js";
-import gameStats from "./gameStats.js";
+import Platform from "./src/platform.js";
+import Sprite from "./src/sprite.js";
+import Background from "./src/background.js";
+import gameScreens from "./src/gameScreens.js";
+import gameStats from "./src/gameStats.js";
 // import Coin from "./coins.js";
-import Block from "./block.js";
+import Block from "./src/block.js";
 
 // Load any images
 var background = new Image();
