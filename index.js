@@ -150,32 +150,24 @@ document.addEventListener("click", (instructionsev) => {
     }
 });
 
-// function coinCollision() {
-//     for (var i = 0; i < coinS.coinlevel1.length; i++) {
-//         for (var j = 0; j < coinS.coinlevel1[i].length; j++) {
-//             if (coinS.coinlevel1[i][j] === 4) {
-//                 if (sprite.position.y <= coinS.baseY + j*40 &&
-//                     sprite.position.y >= coinS.baseY + (j+1)*40 - 5) {
-//                         gStats.points += 1;
-//                         coinS.coinShowing = false;
-//                     } else {
-//                         gStats.points += 0;
-//                     }
-//             }
-//         }
-//     }
-//     if (
-//         sprite.position.x >= coinS.baseX &&
-//         sprite.position.x + sprite.width <= coinS.baseX + coinS.base.width &&
-//         coinS.baseY > sprite.position.y &&
-//         coinS.baseY + coinS.base.height <= sprite.position.y + sprite.height
-//     ) {
-
-//         //Coin.hide();
-//     } else {
-
-//     }
-// }
+function coinCollision() {
+    // for (var i = 0; i < block.length; i++) {
+        // if (block[i].id === 9 || block[i].id === 10) {
+            if (
+                // sprite.position.x === block[736].x + 20 - 14 &&
+                sprite.position.x >= block[736].x - 27 &&
+                sprite.position.x <= block[736].x + 33 + 5 &&
+                block[736].y >= sprite.position.y - 33 - 5 &&
+                block[736].y <= sprite.position.y + 70
+            ) {
+                gStats.points += 1;
+                block[736].y = 564;
+                // block[i].coinActive = false;
+                //Coin.hide();
+            }
+        // }
+    // }
+}
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
@@ -254,7 +246,6 @@ function loop() {
 
     if (sprite.position.x + sprite.width > 550) {
         // Scroll left
-        gStats.hp -= 0.5;
         bg.posGP.l1x -= sprite.dX * 0.2;
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
@@ -279,7 +270,7 @@ function loop() {
         // Sprite moving
         sprite.position.x += sprite.dX;
     }
-    
+
     if (sprite.y >= block[899].y + 40 || (sprite.x >= block[792].x && sprite.x <= block[795].x - 28) || sprite.x <= block[780].x - 28 || sprite.x >= block[839].x + 40) {
         gStats.hp -= 1;
     }
@@ -300,6 +291,7 @@ function gamePlay(timestamp) {
 
     sprite.displaySprite(ctx);
     loop();
+    coinCollision();
     sprite.update(deltaTime);
 
     // coinCollision();
