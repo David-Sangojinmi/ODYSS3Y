@@ -30,8 +30,8 @@ export default class gameScreens {
         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, 800, 600);
         ctx.drawImage(this.gameInstruction, 72, 0);
-        ctx.drawImage(this.gameBack, 107, 424);
-        ctx.drawImage(this.gameNext, 565, 424);
+        ctx.drawImage(this.gameBack, 107, 415);
+        ctx.drawImage(this.gameNext, 565, 415);
     }
 
     pauseScreen(ctx) {

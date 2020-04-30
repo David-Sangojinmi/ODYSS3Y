@@ -1,20 +1,22 @@
 export default class Block {
-    constructor(x, y, w, h, i) {
+    constructor(x, y, w, h, id) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
-        this.i = i;
+        this.id = id;
         this.terrainSet = new Image();
         this.coin = new Image();
+        this.coin2 = new Image();
         this.terrainSet.src = "images/terrainset.png";
         this.coin.src = "images/coin.png";
+        this.coin2.src = "images/coin2.png";
         this.coinActive = true;
         this.terrainScale = 2.5;
     }
 
     drawBlock(ctx) {
-        switch (this.i) {
+        switch (this.id) {
             case 1:
                 ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
                 break;
@@ -36,8 +38,12 @@ export default class Block {
             case 7: // Ground bottom right
                 ctx.drawImage(this.terrainSet, 32, 96, 16, 16, this.x, this.y, this.w, this.h);
                 break;
-            case 9:
+            case 9: // Coin 1
                 ctx.drawImage(this.coin, this.x + 5, this.y + 5);
+                break;
+            case 10: // Coin 2
+                ctx.drawImage(this.coin2, this.x + 5, this.y + 5);
+                break;
         }
     }
 
