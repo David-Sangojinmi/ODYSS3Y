@@ -4,9 +4,9 @@ Background image: https://craftpix.net/freebies/free-horizontal-2d-game-backgrou
 Terrain tile set: 
 Sprite sheets: 
 To-Do:
-    - Better player terrain interaction
+    [~] Better player terrain interaction
     - Fix the bug with the pause button
-    - Make each terrain tile an object
+    [X] Make each terrain tile an object
         > And then try rewriting the collision logic
 */
 
@@ -169,7 +169,7 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 14; // Jumping higher
+        sprite.dY -= 14; // Jump height
         sprite.jumping = true;
     }
     if (controller.left) {
@@ -195,7 +195,9 @@ function loop() {
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
     
-    if (sprite.position.y >= block[780].y - sprite.height - 20) {
+    if (sprite.position.y >= block[780].y - sprite.height - 20 &&
+        sprite.position.x >= block[780].x - 1 - 28 &&
+        sprite.position.x <= block[792].x - 8) {
         // Sprite falling below floor
         sprite.jumping = false;
         sprite.position.y = block[780].y - sprite.height - 20;
@@ -241,8 +243,8 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
+        block[i].active(ctx, i);
     }
-    block[780].active(ctx);
     coinS.displayCoins(ctx);
     gStats.update(deltaTime);
     gStats.display(ctx);
