@@ -39,11 +39,15 @@ export default class Block {
                 ctx.drawImage(this.terrainSet, 32, 96, 16, 16, this.x, this.y, this.w, this.h);
                 break;
             case 9: // Coin 1
-                ctx.drawImage(this.coin, this.x + 5, this.y + 5);
-                break;
+                if (this.coinActive == true) {
+                    ctx.drawImage(this.coin, this.x + 5, this.y + 5);
+                    break;
+                }
             case 10: // Coin 2
-                ctx.drawImage(this.coin2, this.x + 5, this.y + 5);
-                break;
+                if (this.coinActive == true) {
+                    ctx.drawImage(this.coin2, this.x + 5, this.y + 5);
+                    break;
+                }
         }
     }
 

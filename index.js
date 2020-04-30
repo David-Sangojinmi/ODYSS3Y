@@ -5,9 +5,10 @@ Terrain tile set:
 Sprite sheets: 
 To-Do:
     [X] Better player terrain interaction
-    - Fix the bug with the pause button
+    [~] Fix the bug with the pause button
+        [X] Removed pause button for now
     [X] Make each terrain tile an object
-        > And then try rewriting the collision logic
+        [X] And then try rewriting the collision logic
 */
 
 var cvs = document.getElementById("gameScreen");
@@ -151,22 +152,20 @@ document.addEventListener("click", (instructionsev) => {
 });
 
 function coinCollision() {
-    // for (var i = 0; i < block.length; i++) {
-        // if (block[i].id === 9 || block[i].id === 10) {
+    for (var i = 0; i < block.length; i++) {
+        if (block[i].id === 9 || block[i].id === 10) {
             if (
-                // sprite.position.x === block[736].x + 20 - 14 &&
-                sprite.position.x >= block[736].x - 27 &&
-                sprite.position.x <= block[736].x + 33 + 5 &&
-                block[736].y >= sprite.position.y - 33 - 5 &&
-                block[736].y <= sprite.position.y + 70
+                sprite.position.x >= block[i].x - 27 &&
+                sprite.position.x <= block[i].x + 33 + 5 &&
+                block[i].y >= sprite.position.y - 33 - 5 &&
+                block[i].y <= sprite.position.y + 70 &&
+                block[i].coinActive === true
             ) {
+                block[i].coinActive = false;
                 gStats.points += 1;
-                block[736].y = 564;
-                // block[i].coinActive = false;
-                //Coin.hide();
             }
-        // }
-    // }
+        }
+    }
 }
 
 function loop() {
@@ -189,13 +188,6 @@ function loop() {
     sprite.position.y += sprite.dY;
     sprite.dX *= 0.89; // Friction
     sprite.dY *= 0.9; // Friction
-
-    /* Pseudocode for tile collision detection
-    - Loop through the array for generating tiles
-    - If sprite bottom y pos <= tile top y pos AND sprite left x pos <= tile right x pos AND sprite right x pos >= sprite left x pos THEN
-        - Sprite should not fall through the title
-    - ELSE
-        - Sprite should fall until it reaches a tile which the above is true */
 
     if (
         (sprite.position.y >= block[780].y - sprite.height - 20 && sprite.position.x >= block[780].x - 1 - 28 && sprite.position.x <= block[792].x - 8) ||
@@ -299,39 +291,39 @@ function gamePlay(timestamp) {
     window.requestAnimationFrame(gamePlay);
 }
 
-function gamePaused() {
-    ctx.fillStyle = "rgba(100, 100, 100, 0.7)";
-    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    // Draw resume button
-    ctx.fillStyle = "rgb(0, 200, 0)";
-    ctx.fillRect(300, 150, 200, 100);
-    ctx.fillRect(300, 350, 200, 100);
-    sprite.fpsCount = 0;
-    window.requestAnimationFrame(gamePaused);
-}
+// function gamePaused() {
+//     ctx.fillStyle = "rgba(100, 100, 100, 0.7)";
+//     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+//     // Draw resume button
+//     ctx.fillStyle = "rgb(0, 200, 0)";
+//     ctx.fillRect(300, 150, 200, 100);
+//     ctx.fillRect(300, 350, 200, 100);
+//     sprite.fpsCount = 0;
+//     window.requestAnimationFrame(gamePaused);
+// }
 
-document.addEventListener("click", (evnt) => {
-    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    if (gameplay === true) {
-        if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
-            gamepaused = true;
-            gameplay = false;
+// document.addEventListener("click", (evnt) => {
+//     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+//     if (gameplay === true) {
+//         if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
+//             gamepaused = true;
+//             gameplay = false;
 
-            gameLoop();
-        }
-    }
-});
+//             gameLoop();
+//         }
+//     }
+// });
 
-document.addEventListener("click", (pauseevnt) => {
-    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    if (gamepaused === true) {
-        if (pauseevnt.clientX >= 300 + winRect.left + 2 && pauseevnt.clientX <= 500 + winRect.left + 2 && pauseevnt.clientY >= 150 + winRect.top + 2 && pauseevnt.clientY <= 250 + winRect.top + 2) {
-            gamepaused = false;
-            gameplay = true;
-            gameLoop();
-        }
-    }
-});
+// document.addEventListener("click", (pauseevnt) => {
+//     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+//     if (gamepaused === true) {
+//         if (pauseevnt.clientX >= 300 + winRect.left + 2 && pauseevnt.clientX <= 500 + winRect.left + 2 && pauseevnt.clientY >= 150 + winRect.top + 2 && pauseevnt.clientY <= 250 + winRect.top + 2) {
+//             gamepaused = false;
+//             gameplay = true;
+//             gameLoop();
+//         }
+//     }
+// });
 
 // For sprite movement and scrolling //
 document.addEventListener("keydown", controller.keyListener);
@@ -362,9 +354,9 @@ function gameLoop() {
     if (gameplay == true) {
         gamePlay();
     }
-    if (gamepaused == true) {
-        gamePaused();
-    }
+    // if (gamepaused == true) {
+    //     gamePaused();
+    // }
     if (gameend == true) {
         gameEnd();
     }
