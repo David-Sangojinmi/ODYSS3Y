@@ -4,7 +4,7 @@ Background image: https://craftpix.net/freebies/free-horizontal-2d-game-backgrou
 Terrain tile set: 
 Sprite sheets: 
 To-Do:
-    [~] Better player terrain interaction
+    [X] Better player terrain interaction
     - Fix the bug with the pause button
     [X] Make each terrain tile an object
         > And then try rewriting the collision logic
@@ -22,7 +22,7 @@ import Sprite from "./sprite.js";
 import Background from "./background.js";
 import gameScreens from "./gameScreens.js";
 import gameStats from "./gameStats.js";
-import Coin from "./coins.js";
+// import Coin from "./coins.js";
 import Block from "./block.js";
 
 // Load any images
@@ -47,7 +47,7 @@ for (var i = 0; i < platform.level1.length; i++) {
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
 let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
-let coinS = new Coin();
+// let coinS = new Coin();
 var gamestart = true;
 var gameinstructions = false;
 var gameplay = false;
@@ -127,45 +127,55 @@ document.addEventListener("click", (instructionsev) => {
     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gameinstructions === true) {
         if (
-            instructionsev.clientX >= 336 + winRect.left + 2 &&
-            instructionsev.clientX <= 336 + gScreens.playBtn1.width + winRect.left + 2 &&
-            instructionsev.clientY >= 352 + winRect.top + 2 &&
-            instructionsev.clientY <= 352 + gScreens.playBtn1.height + winRect.top + 2
+            instructionsev.clientX >= 565 + winRect.left + 2 &&
+            instructionsev.clientX <= 565 + gScreens.gameNext.width + winRect.left + 2 &&
+            instructionsev.clientY >= 424 + winRect.top + 2 &&
+            instructionsev.clientY <= 424 + gScreens.gameNext.height + winRect.top + 2
         ) {
             gamestart = false;
             gameinstructions = false;
             gameplay = true;
             gameLoop();
+        } else if (
+            instructionsev.clientX >= 107 + winRect.left + 2 &&
+            instructionsev.clientX <= 107 + gScreens.gameBack.width + winRect.left + 2 &&
+            instructionsev.clientY >= 424 + winRect.top + 2 &&
+            instructionsev.clientY <= 424 + gScreens.gameBack.height + winRect.top + 2
+        ) {
+            gamestart = true;
+            gameinstructions = false;
+            gameplay = false;
+            gameLoop();
         }
     }
 });
 
-function coinCollision() {
-    for (var i = 0; i < coinS.coinlevel1.length; i++) {
-        for (var j = 0; j < coinS.coinlevel1[i].length; j++) {
-            if (coinS.coinlevel1[i][j] === 4) {
-                if (sprite.position.y <= coinS.baseY + j*40 &&
-                    sprite.position.y >= coinS.baseY + (j+1)*40 - 5) {
-                        gStats.points += 1;
-                        coinS.coinShowing = false;
-                    } else {
-                        gStats.points += 0;
-                    }
-            }
-        }
-    }
-    // if (
-    //     sprite.position.x >= coinS.baseX &&
-    //     sprite.position.x + sprite.width <= coinS.baseX + coinS.base.width &&
-    //     coinS.baseY > sprite.position.y &&
-    //     coinS.baseY + coinS.base.height <= sprite.position.y + sprite.height
-    // ) {
-        
-    //     //Coin.hide();
-    // } else {
-        
-    // }
-}
+// function coinCollision() {
+//     for (var i = 0; i < coinS.coinlevel1.length; i++) {
+//         for (var j = 0; j < coinS.coinlevel1[i].length; j++) {
+//             if (coinS.coinlevel1[i][j] === 4) {
+//                 if (sprite.position.y <= coinS.baseY + j*40 &&
+//                     sprite.position.y >= coinS.baseY + (j+1)*40 - 5) {
+//                         gStats.points += 1;
+//                         coinS.coinShowing = false;
+//                     } else {
+//                         gStats.points += 0;
+//                     }
+//             }
+//         }
+//     }
+//     if (
+//         sprite.position.x >= coinS.baseX &&
+//         sprite.position.x + sprite.width <= coinS.baseX + coinS.base.width &&
+//         coinS.baseY > sprite.position.y &&
+//         coinS.baseY + coinS.base.height <= sprite.position.y + sprite.height
+//     ) {
+
+//         //Coin.hide();
+//     } else {
+
+//     }
+// }
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
@@ -185,7 +195,7 @@ function loop() {
     sprite.position.y += sprite.dY;
     sprite.position.x += sprite.dX;
     sprite.position.y += sprite.dY;
-    sprite.dX *= 0.9; // Friction
+    sprite.dX *= 0.89; // Friction
     sprite.dY *= 0.9; // Friction
 
     /* Pseudocode for tile collision detection
@@ -194,13 +204,51 @@ function loop() {
         - Sprite should not fall through the title
     - ELSE
         - Sprite should fall until it reaches a tile which the above is true */
-    
-    if (sprite.position.y >= block[780].y - sprite.height - 20 &&
-        sprite.position.x >= block[780].x - 1 - 28 &&
-        sprite.position.x <= block[792].x - 8) {
+
+    if (
+        (sprite.position.y >= block[780].y - sprite.height - 20 && sprite.position.x >= block[780].x - 1 - 28 && sprite.position.x <= block[792].x - 8) ||
+        (sprite.position.y >= block[795].y - sprite.height - 20 && sprite.position.x >= block[795].x - 1 - 28 && sprite.position.x <= block[802].x - 8) ||
+        (sprite.position.y >= block[807].y - sprite.height - 20 && sprite.position.x >= block[807].x - 1 - 28 && sprite.position.x <= block[839].x + 40 - 8)
+    ) {
         // Sprite falling below floor
         sprite.jumping = false;
         sprite.position.y = block[780].y - sprite.height - 20;
+        sprite.dY = 0;
+    } else if (
+        sprite.position.y >= block[635].y - sprite.height - 20 &&
+        sprite.position.y <= block[695].y - sprite.height - 35 &&
+        sprite.position.x >= block[635].x - 1 - 28 &&
+        sprite.position.x <= block[639].x - 8
+    ) {
+        sprite.jumping = false;
+        sprite.position.y = block[635].y - sprite.height - 20;
+        sprite.dY = 0;
+    } else if (
+        sprite.position.y >= block[581].y - sprite.height - 20 &&
+        sprite.position.y <= block[641].y - sprite.height - 35 &&
+        sprite.position.x >= block[581].x - 1 - 28 &&
+        sprite.position.x <= block[583].x - 8
+    ) {
+        sprite.jumping = false;
+        sprite.position.y = block[581].y - sprite.height - 20;
+        sprite.dY = 0;
+    } else if (
+        sprite.position.y >= block[525].y - sprite.height - 20 &&
+        sprite.position.y <= block[585].y - sprite.height - 35 &&
+        sprite.position.x >= block[525].x - 1 - 28 &&
+        sprite.position.x <= block[527].x - 8
+    ) {
+        sprite.jumping = false;
+        sprite.position.y = block[525].y - sprite.height - 20;
+        sprite.dY = 0;
+    } else if (
+        sprite.position.y >= block[712].y - sprite.height - 20 &&
+        sprite.position.y <= block[772].y - sprite.height - 35 &&
+        sprite.position.x >= block[712].x - 1 - 28 &&
+        sprite.position.x <= block[715].x - 8
+    ) {
+        sprite.jumping = false;
+        sprite.position.y = block[712].y - sprite.height - 20;
         sprite.dY = 0;
     }
 
@@ -214,7 +262,6 @@ function loop() {
         for (var i = 0; i < block.length; i++) {
             block[i].x -= sprite.dX;
         }
-        coinS.baseX -= sprite.dX;
         sprite.position.x = 550 - sprite.width;
     }
     if (sprite.position.x < 250) {
@@ -226,12 +273,15 @@ function loop() {
         for (var i = 0; i < block.length; i++) {
             block[i].x -= sprite.dX;
         }
-        coinS.baseX -= sprite.dX;
         sprite.position.x = 250;
     }
     if (sprite.position.x >= 250 && sprite.position.x <= 550) {
         // Sprite moving
         sprite.position.x += sprite.dX;
+    }
+    
+    if (sprite.y >= block[899].y + 40 || (sprite.x >= block[792].x && sprite.x <= block[795].x - 28) || sprite.x <= block[780].x - 28 || sprite.x >= block[839].x + 40) {
+        gStats.hp -= 1;
     }
 }
 
@@ -245,10 +295,9 @@ function gamePlay(timestamp) {
         block[i].drawBlock(ctx);
         block[i].active(ctx, i);
     }
-    coinS.displayCoins(ctx);
     gStats.update(deltaTime);
     gStats.display(ctx);
-    
+
     sprite.displaySprite(ctx);
     loop();
     sprite.update(deltaTime);
@@ -275,7 +324,7 @@ document.addEventListener("click", (evnt) => {
         if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
             gamepaused = true;
             gameplay = false;
-            
+
             gameLoop();
         }
     }
