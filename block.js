@@ -6,7 +6,10 @@ export default class Block {
         this.h = h;
         this.i = i;
         this.terrainSet = new Image();
+        this.coin = new Image();
         this.terrainSet.src = "images/terrainset.png";
+        this.coin.src = "images/coin.png";
+        this.coinActive = true;
         this.terrainScale = 2.5;
     }
 
@@ -33,6 +36,8 @@ export default class Block {
             case 7: // Ground bottom right
                 ctx.drawImage(this.terrainSet, 32, 96, 16, 16, this.x, this.y, this.w, this.h);
                 break;
+            case 9:
+                ctx.drawImage(this.coin, this.x + 5, this.y + 5);
         }
     }
 
