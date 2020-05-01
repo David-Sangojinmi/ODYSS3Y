@@ -29,6 +29,7 @@ import gameScreens from "./src/gameScreens.js";
 import gameStats from "./src/gameStats.js";
 // import Coin from "./coins.js";
 import Block from "./src/block.js";
+import { grassTLBlock } from "./src/block.js";
 
 // Load any images
 var background = new Image();
@@ -41,11 +42,11 @@ background.src = "images/bg6-3.jpg";
 // Important variables
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
 let platform = new Platform(GAME_WIDTH, GAME_HEIGHT);
-var block = [];
-var blockCount = 0;
+let block = [];
+let blockCount = 0;
 for (var i = 0; i < platform.level1.length; i++) {
     for (var j = 0; j < platform.level1[i].length; j++) {
-        block[blockCount] = new Block(j * 40, i * 40, 40, 40, platform.level1[i][j]);
+        block[blockCount] = new grassTLBlock(j * 40, i * 40, 40, 40, platform.level1[i][j]);
         blockCount++;
     }
 }
@@ -204,61 +205,72 @@ function loop() {
     sprite.dX *= 0.89; // Friction
     sprite.dY *= 0.9; // Friction
 
-    if (
-        (sprite.position.y >= block[780].y - sprite.height - 20 && sprite.position.x >= block[780].x - 1 - 28 && sprite.position.x <= block[792].x - 8) ||
-        (sprite.position.y >= block[795].y - sprite.height - 20 && sprite.position.x >= block[795].x - 1 - 28 && sprite.position.x <= block[802].x - 8) ||
-        (sprite.position.y >= block[807].y - sprite.height - 20 && sprite.position.x >= block[807].x - 1 - 28 && sprite.position.x <= block[839].x + 40 - 8)
-    ) {
-        // Sprite falling below floor
-        sprite.jumping = false;
-        sprite.position.y = block[780].y - sprite.height - 20;
-        sprite.dY = 0;
-    } else if (
-        sprite.position.y >= block[635].y - sprite.height - 20 &&
-        sprite.position.y <= block[695].y - sprite.height - 35 &&
-        sprite.position.x >= block[635].x - 1 - 28 &&
-        sprite.position.x <= block[639].x - 8
-    ) {
-        sprite.jumping = false;
-        sprite.position.y = block[635].y - sprite.height - 20;
-        sprite.dY = 0;
-    } else if (
-        sprite.position.y >= block[581].y - sprite.height - 20 &&
-        sprite.position.y <= block[641].y - sprite.height - 35 &&
-        sprite.position.x >= block[581].x - 1 - 28 &&
-        sprite.position.x <= block[583].x - 8
-    ) {
-        sprite.jumping = false;
-        sprite.position.y = block[581].y - sprite.height - 20;
-        sprite.dY = 0;
-    } else if (
-        sprite.position.y >= block[525].y - sprite.height - 20 &&
-        sprite.position.y <= block[585].y - sprite.height - 35 &&
-        sprite.position.x >= block[525].x - 1 - 28 &&
-        sprite.position.x <= block[527].x - 8
-    ) {
-        sprite.jumping = false;
-        sprite.position.y = block[525].y - sprite.height - 20;
-        sprite.dY = 0;
-    } else if (
-        sprite.position.y >= block[712].y - sprite.height - 20 &&
-        sprite.position.y <= block[772].y - sprite.height - 35 &&
-        sprite.position.x >= block[712].x - 1 - 28 &&
-        sprite.position.x <= block[715].x - 8
-    ) {
-        sprite.jumping = false;
-        sprite.position.y = block[712].y - sprite.height - 20;
-        sprite.dY = 0;
-    } else if (
-        sprite.position.y >= block[682].y - sprite.height - 20 &&
-        sprite.position.y <= block[742].y - sprite.height - 35 &&
-        sprite.position.x >= block[682].x - 1 - 28 &&
-        sprite.position.x <= block[687].x - 8
-    ) {
-        sprite.jumping = false;
-        sprite.position.y = block[682].y - sprite.height - 20;
-        sprite.dY = 0;
+    for (var i=0; i <block.length; i++) {
+        if (block[i].id === 1) {
+            if (sprite.position.y >= block[i].y - sprite.height - 20 &&
+                sprite.position.x >= block[i].x - 28 &&
+                sprite.position.x <= block[i].x + 28) {
+                    sprite.jumping = false;
+                    sprite.position.y = block[i] - sprite.height - 20;
+                    sprite.dY = 0;
+                }
+        }
     }
+    // if (
+    //     (sprite.position.y >= block[780].y - sprite.height - 20 && sprite.position.x >= block[780].x - 1 - 28 && sprite.position.x <= block[792].x - 8) ||
+    //     (sprite.position.y >= block[795].y - sprite.height - 20 && sprite.position.x >= block[795].x - 1 - 28 && sprite.position.x <= block[802].x - 8) ||
+    //     (sprite.position.y >= block[807].y - sprite.height - 20 && sprite.position.x >= block[807].x - 1 - 28 && sprite.position.x <= block[839].x + 40 - 8)
+    // ) {
+    //     // Sprite falling below floor
+    //     sprite.jumping = false;
+    //     sprite.position.y = block[780].y - sprite.height - 20;
+    //     sprite.dY = 0;
+    // } else if (
+    //     sprite.position.y >= block[635].y - sprite.height - 20 &&
+    //     sprite.position.y <= block[695].y - sprite.height - 35 &&
+    //     sprite.position.x >= block[635].x - 1 - 28 &&
+    //     sprite.position.x <= block[639].x - 8
+    // ) {
+    //     sprite.jumping = false;
+    //     sprite.position.y = block[635].y - sprite.height - 20;
+    //     sprite.dY = 0;
+    // } else if (
+    //     sprite.position.y >= block[581].y - sprite.height - 20 &&
+    //     sprite.position.y <= block[641].y - sprite.height - 35 &&
+    //     sprite.position.x >= block[581].x - 1 - 28 &&
+    //     sprite.position.x <= block[583].x - 8
+    // ) {
+    //     sprite.jumping = false;
+    //     sprite.position.y = block[581].y - sprite.height - 20;
+    //     sprite.dY = 0;
+    // } else if (
+    //     sprite.position.y >= block[525].y - sprite.height - 20 &&
+    //     sprite.position.y <= block[585].y - sprite.height - 35 &&
+    //     sprite.position.x >= block[525].x - 1 - 28 &&
+    //     sprite.position.x <= block[527].x - 8
+    // ) {
+    //     sprite.jumping = false;
+    //     sprite.position.y = block[525].y - sprite.height - 20;
+    //     sprite.dY = 0;
+    // } else if (
+    //     sprite.position.y >= block[712].y - sprite.height - 20 &&
+    //     sprite.position.y <= block[772].y - sprite.height - 35 &&
+    //     sprite.position.x >= block[712].x - 1 - 28 &&
+    //     sprite.position.x <= block[715].x - 8
+    // ) {
+    //     sprite.jumping = false;
+    //     sprite.position.y = block[712].y - sprite.height - 20;
+    //     sprite.dY = 0;
+    // } else if (
+    //     sprite.position.y >= block[682].y - sprite.height - 20 &&
+    //     sprite.position.y <= block[742].y - sprite.height - 35 &&
+    //     sprite.position.x >= block[682].x - 1 - 28 &&
+    //     sprite.position.x <= block[687].x - 8
+    // ) {
+    //     sprite.jumping = false;
+    //     sprite.position.y = block[682].y - sprite.height - 20;
+    //     sprite.dY = 0;
+    // }
 
     if (sprite.position.x + sprite.width > 550) {
         // Scroll left
@@ -299,7 +311,7 @@ function gamePlay(timestamp) {
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
-        block[i].drawBlock(ctx);
+        grassTLBlock[i].drawBlock(ctx);
         // block[i].active(ctx, i);
     }
     gStats.update(deltaTime);
