@@ -17,7 +17,7 @@ export default class Sprite {
 
         // Animation
         this.sprite = new Image();
-        this.sprite.src = "images/terrainset1.png";
+        this.sprite.src = "images/spritesheet.png";
         // this.sprite.src = "images/spritesheet.png";
         this.srcX = 0;
         this.srcY = 0;
@@ -51,7 +51,7 @@ export default class Sprite {
 
     drawMovingLeft(ctx) {
         this.updateFrame();
-        ctx.drawImage(this.sprite, this.srcX, 72, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
+        ctx.drawImage(this.sprite, this.srcX, 144, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
     }
 
     drawMovingRight(ctx) {
