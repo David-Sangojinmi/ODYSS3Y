@@ -163,7 +163,7 @@ function coinCollision() {
                 sprite.position.x >= block[i].x - 27 &&
                 sprite.position.x <= block[i].x + 33 + 5 &&
                 block[i].y >= sprite.position.y - 33 - 5 &&
-                block[i].y <= sprite.position.y + 70 &&
+                block[i].y <= sprite.position.y + sprite.spritesheetHeight &&
                 block[i].coinActive === true
             ) {
                 block[i].coinActive = false;
@@ -174,7 +174,7 @@ function coinCollision() {
                 sprite.position.x >= block[i].x - 27 &&
                 sprite.position.x <= block[i].x + 33 + 5 &&
                 block[i].y >= sprite.position.y - 33 - 5 &&
-                block[i].y <= sprite.position.y + 70 &&
+                block[i].y <= sprite.position.y + sprite.spritesheetHeight &&
                 block[i].coinActive === true
             ) {
                 block[i].coinActive = false;
@@ -186,7 +186,7 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.dY -= 14; // Jump height
+        sprite.dY -= 16; // Jump height
         sprite.jumping = true;
     }
     if (controller.left) {
@@ -198,7 +198,7 @@ function loop() {
         sprite.movingRight = true;
     }
 
-    sprite.dY += 0.9; // Gravity - come down slower or quicker
+    sprite.dY += 0.92; // Gravity - come down slower or quicker
     sprite.position.y += sprite.dY;
     sprite.position.x += sprite.dX;
     sprite.position.y += sprite.dY;
@@ -223,7 +223,7 @@ function loop() {
     ) {
         // Sprite falling below floor
         sprite.jumping = false;
-        sprite.position.y = block[780].y - sprite.height - 20;
+        sprite.position.y = block[780].y - sprite.spritesheetHeight;
         sprite.dY = 0;
     } else if (
         sprite.position.y >= block[635].y - sprite.height - 20 &&
@@ -232,7 +232,7 @@ function loop() {
         sprite.position.x <= block[639].x - 8
     ) {
         sprite.jumping = false;
-        sprite.position.y = block[635].y - sprite.height - 20;
+        sprite.position.y = block[635].y - sprite.spritesheetHeight;
         sprite.dY = 0;
     } else if (
         sprite.position.y >= block[581].y - sprite.height - 20 &&
@@ -241,7 +241,7 @@ function loop() {
         sprite.position.x <= block[583].x - 8
     ) {
         sprite.jumping = false;
-        sprite.position.y = block[581].y - sprite.height - 20;
+        sprite.position.y = block[581].y - sprite.spritesheetHeight;
         sprite.dY = 0;
     } else if (
         sprite.position.y >= block[525].y - sprite.height - 20 &&
@@ -250,7 +250,7 @@ function loop() {
         sprite.position.x <= block[527].x - 8
     ) {
         sprite.jumping = false;
-        sprite.position.y = block[525].y - sprite.height - 20;
+        sprite.position.y = block[525].y - sprite.spritesheetHeight;
         sprite.dY = 0;
     } else if (
         sprite.position.y >= block[712].y - sprite.height - 20 &&
@@ -259,7 +259,7 @@ function loop() {
         sprite.position.x <= block[715].x - 8
     ) {
         sprite.jumping = false;
-        sprite.position.y = block[712].y - sprite.height - 20;
+        sprite.position.y = block[712].y - sprite.spritesheetHeight;
         sprite.dY = 0;
     } else if (
         sprite.position.y >= block[682].y - sprite.height - 20 &&
@@ -268,7 +268,7 @@ function loop() {
         sprite.position.x <= block[687].x - 8
     ) {
         sprite.jumping = false;
-        sprite.position.y = block[682].y - sprite.height - 20;
+        sprite.position.y = block[682].y - sprite.spritesheetHeight;
         sprite.dY = 0;
     }
 
