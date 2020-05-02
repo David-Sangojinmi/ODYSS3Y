@@ -17,70 +17,46 @@ export default class Sprite {
 
         // Animation
         this.sprite = new Image();
-        this.sprite.src = "images/spritesheet.png";
+        this.sprite.src = "images/terrainset1.png";
+        // this.sprite.src = "images/spritesheet.png";
         this.srcX = 0;
         this.srcY = 0;
-        this.spritesheetWidth = 112;
-        this.spritesheetHeight = 70;
-        this.spriteWidth = 28;
-        this.totalFrames = 4;
+        this.spritesheetWidth = 240;
+        this.spritesheetHeight = 72;
+        this.spriteWidth = 30;
+        this.totalFrames = this.spritesheetWidth / this.spriteWidth;
         this.currentFrame = 0;
         this.fpsCount = 0;
-        this.scale = 1.3;
+        this.scale = 1.2;
     }
 
     updateFrame() {
         this.fpsCount++;
-        if (this.fpsCount % 10 == 0) {
+        if (this.fpsCount % 5 == 0) {
             this.currentFrame = ++this.currentFrame % this.totalFrames;
         }
         this.srcX = this.currentFrame * this.spriteWidth;
-        this.srcY = 0;
+        // if (this.jumping === false && this.movingLeft === false && this.movingRight === false) {
+        //     this.srcY = 0;
+        // }
+        // if (this.movingLeft === true || this.movingRight === true) {
+        //     this.srcY = 1;
+        // }
     }
 
     drawIdleSprite(ctx) {
         this.updateFrame();
-        ctx.drawImage(
-            this.sprite,
-            this.srcX,
-            this.srcY,
-            this.spriteWidth,
-            this.spritesheetHeight,
-            this.position.x,
-            this.position.y,
-            this.spriteWidth * this.scale,
-            this.spritesheetHeight * this.scale
-        );
+        ctx.drawImage(this.sprite, this.srcX, 0, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
     }
 
     drawMovingLeft(ctx) {
         this.updateFrame();
-        ctx.drawImage(
-            this.sprite,
-            this.srcX,
-            this.srcY,
-            this.spriteWidth,
-            this.spritesheetHeight,
-            this.position.x,
-            this.position.y,
-            this.spriteWidth * this.scale,
-            this.spritesheetHeight * this.scale
-        );
+        ctx.drawImage(this.sprite, this.srcX, 72, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
     }
 
     drawMovingRight(ctx) {
         this.updateFrame();
-        ctx.drawImage(
-            this.sprite,
-            this.srcX,
-            this.srcY,
-            this.spriteWidth,
-            this.spritesheetHeight,
-            this.position.x,
-            this.position.y,
-            this.spriteWidth * this.scale,
-            this.spritesheetHeight * this.scale
-        );
+        ctx.drawImage(this.sprite, this.srcX, 72, this.spriteWidth, this.spritesheetHeight, this.position.x, this.position.y, this.spriteWidth, this.spritesheetHeight);
     }
 
     drawJumpingSprite(ctx) {
@@ -90,18 +66,12 @@ export default class Sprite {
     displaySprite(ctx) {
         if (this.jumping === false && this.movingLeft === false && this.movingRight === false) {
             this.drawIdleSprite(ctx);
-        }
-        if (this.jumping === true) {
-            // this.drawJumpingSprite(ctx);
+        } else if (this.jumping === true) {
             this.drawIdleSprite(ctx);
-        }
-        if (this.movingRight === true) {
-            // this.drawMovingRight(ctx);
-            this.drawIdleSprite(ctx);
-        }
-        if (this.movingLeft === true) {
-            // this.drawMovingRight(ctx);
-            this.drawIdleSprite(ctx);
+        } else if (this.movingRight === true) {
+            this.drawMovingRight(ctx);
+        } else if (this.movingLeft === true) {
+            this.drawMovingLeft(ctx);
         }
     }
 
