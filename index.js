@@ -186,16 +186,19 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
+        sprite.drawIdleSprite(ctx);
         sprite.dY -= 16; // Jump height
         sprite.jumping = true;
-    }
-    if (controller.left) {
+    } else if (controller.left) {
+        sprite.drawMovingLeft(ctx);
         sprite.dX -= 0.5;
-        sprite.movingLeft = true;
-    }
-    if (controller.right) {
+        // sprite.movingLeft = true;
+    } else if (controller.right) {
+        sprite.drawMovingRight(ctx);
         sprite.dX += 0.5;
-        sprite.movingRight = true;
+        // sprite.movingRight = true;
+    } else {
+        sprite.drawIdleSprite(ctx);
     }
 
     sprite.dY += 0.92; // Gravity - come down slower or quicker
@@ -312,13 +315,13 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
-        block[i].active(ctx, i);
+        // block[i].active(ctx, i);
     }
     gStats.update(deltaTime);
     gStats.display(ctx);
 
-    sprite.displaySprite(ctx);
     loop();
+    // sprite.displaySprite(ctx);
     coinCollision();
     sprite.update(deltaTime);
 
