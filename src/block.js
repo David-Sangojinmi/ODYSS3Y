@@ -15,8 +15,8 @@ export default class Block {
         this.terrainScale = 2.5;
     }
 
-    drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
+    drawBlock(ctx, posX, posY) {
+        ctx.drawImage(this.terrainSet, posX, posY, 16, 16, this.x, this.y, this.w, this.h);
     }
 
     active(ctx, blockNum) {
@@ -26,117 +26,105 @@ export default class Block {
     }
 }
 
-export class grassBlock extends Block {
+export class Block4 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 0;
+        this.pposY = 80;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class grassTLBlock extends grassBlock {
+export class Block1 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 160;
+        this.pposY = 80;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 0, 80, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class grassTMBlock extends grassBlock {
+export class Block6 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 32;
+        this.pposY = 80;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
+        if (this.id === 3) {
+            ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
+        }
     }
 }
 
-export class grassTRBlock extends grassBlock {
+export class Block5 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 0;
+        this.pposY = 96;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 32, 80, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class grassBLBlock extends grassBlock {
+export class Block2 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 160;
+        this.pposY = 96;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 0, 96, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class grassBMBlock extends grassBlock {
+export class Block7 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 32;
+        this.pposY = 96;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 160, 96, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class grassBRBlock extends grassBlock {
+export class Block3 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 16;
+        this.pposY = 128;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 32, 96, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class stoneBlock extends Block {
+export class Block9 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
+        this.pposX = 16;
+        this.pposY = 64;
     }
 
     drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.terrainSet, this.pposX, this.pposY, 16, 16, this.x, this.y, this.w, this.h);
     }
 }
 
-export class stone1Block extends stoneBlock {
-    constructor(x, y, w, h, id) {
-        super(x, y, w, h, id);
-    }
-
-    drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 16, 128, 16, 16, this.x, this.y, this.w, this.h);
-    }
-}
-
-export class stone2Block extends stoneBlock {
-    constructor(x, y, w, h, id) {
-        super(x, y, w, h, id);
-    }
-
-    drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 16, 64, 16, 16, this.x, this.y, this.w, this.h);
-    }
-}
-
-export class coinBlock extends Block {
-    constructor(x, y, w, h, id) {
-        super(x, y, w, h, id);
-    }
-
-    drawBlock(ctx) {
-        ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
-    }
-}
-
-export class coin1Block extends coinBlock {
+export class Block10 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
     }
@@ -148,7 +136,7 @@ export class coin1Block extends coinBlock {
     }
 }
 
-export class coin2Block extends coinBlock {
+export class Block11 extends Block {
     constructor(x, y, w, h, id) {
         super(x, y, w, h, id);
     }
