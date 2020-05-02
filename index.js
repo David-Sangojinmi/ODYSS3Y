@@ -27,8 +27,8 @@ import Sprite from "./src/sprite.js";
 import Background from "./src/background.js";
 import gameScreens from "./src/gameScreens.js";
 import gameStats from "./src/gameStats.js";
+import Block from "./src/block.js";
 // import Coin from "./coins.js";
-import * as blockC from "./src/block.js";
 
 // Load any images
 // var background = new Image();
@@ -45,30 +45,9 @@ let block = [];
 let blockCount = 0;
 for (var i = 0; i < platform.level1.length; i++) {
     for (var j = 0; j < platform.level1[i].length; j++) {
-        // switch (platform.level1[i][j]) {
-        //     case 1:block[blockCount] = new blockC.Block1(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 2:block[blockCount] = new blockC.Block2(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 3:block[blockCount] = new blockC.Block3(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 4:block[blockCount] = new blockC.Block4(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 5:block[blockCount] = new blockC.Block5(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 6:block[blockCount] = new blockC.Block6(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 7:block[blockCount] = new blockC.Block7(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 9:block[blockCount] = new blockC.Block9(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 10:block[blockCount] = new blockC.Block10(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        //     case 11:block[blockCount] = new blockC.Block11(j * 40, i * 40, 40, 40, platform.level1[i][j]);
-        //         break;
-        // }
-        block[blockCount] = new blockC.Block1(j * 40, i * 40, 40, 40, platform.level1[i][j]);
+        block[blockCount] = new Block(j * 40, i * 40, 40, 40, platform.level1[i][j]);
         blockCount++;
+        // block[blockCount] = new blockC.blockName(j * 40, i * 40, 40, 40, platform.level1[i][j]);
     }
 }
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
@@ -333,7 +312,7 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
-        // block[i].active(ctx, i);
+        block[i].active(ctx, i);
     }
     gStats.update(deltaTime);
     gStats.display(ctx);
