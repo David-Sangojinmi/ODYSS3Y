@@ -6,10 +6,11 @@ Sprite sheets:
 To-Do:
     [X] Better player terrain interaction
     [X] Animate player moving left/right and jump
-    [X] Implement general collision detection for blocks
+    [ ] Implement general collision detection for blocks
     [ ] Allow recognition for which type of collision is happening (l/r/u/d)
     [ ] Player shouldn't be able to double jump through platforms
     [X] Player should lose hp when he falls in ditches
+        [X] Fix the spawning bug after falling off platform
     [~] Fix the bug with the pause button
         [X] Removed pause button for now
     [X] Make each terrain tile an object
@@ -36,8 +37,12 @@ import Block from "./src/block.js";
 // background.src = "images/bg6-3.jpg";
 
 // Load audio
-//     var jumpS = new Audio();
-//     jumpS.src = "sounds/jump.mp3";
+var jump = new Audio();
+var getCoin = new Audio();
+var click = new Audio();
+jump.src = "sounds/jump.wav";
+getCoin.src = "sounds/coin.wav";
+click.src = "sounds/click.wav";
 
 // Important variables
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
@@ -111,6 +116,7 @@ document.addEventListener("click", (ev) => {
             ev.clientY >= 452 + winRect.top + 2 &&
             ev.clientY <= 452 + gScreens.playBtn1.height + winRect.top + 2
         ) {
+            click.play();
             gamestart = false;
             gameinstructions = true;
             gameplay = false;
@@ -140,6 +146,7 @@ document.addEventListener("click", (instructionsev) => {
             instructionsev.clientY >= 424 + winRect.top + 2 &&
             instructionsev.clientY <= 424 + gScreens.gameNext.height + winRect.top + 2
         ) {
+            click.play();
             gamestart = false;
             gameinstructions = false;
             gameplay = true;
@@ -150,6 +157,7 @@ document.addEventListener("click", (instructionsev) => {
             instructionsev.clientY >= 424 + winRect.top + 2 &&
             instructionsev.clientY <= 424 + gScreens.gameBack.height + winRect.top + 2
         ) {
+            click.play();
             gamestart = true;
             gameinstructions = false;
             gameplay = false;
@@ -169,6 +177,7 @@ function coinCollision() {
                 block[i].coinActive === true
             ) {
                 block[i].coinActive = false;
+                getCoin.play();
                 gStats.points += 1;
             }
         } else if (block[i].id === 10) {
@@ -180,6 +189,7 @@ function coinCollision() {
                 block[i].coinActive === true
             ) {
                 block[i].coinActive = false;
+                getCoin.play();
                 gStats.points += 3;
             }
         }
@@ -195,6 +205,7 @@ function loop() {
         } else {
             sprite.drawIdleSprite(ctx);
         }
+        jump.play();
         sprite.dY -= 16; // Jump height
         sprite.jumping = true;
     } else if (controller.left) {
@@ -319,7 +330,12 @@ function collisionDetection() {
         bg.posGP.l3x = 0;
         bg.posGP.l4x = 0;
         if (sprite.position.x > block[786].x) {
-            rstPosDff = 240 + Math.abs(block[786].x);
+            if (block[786].x < 0) {
+                rstPosDff = 240 + Math.abs(block[786].x);
+            }
+            if (block[786].x > 0) {
+                rstPosDff = 240 - block[786].x;
+            }
             for (var i = 0; i < block.length; i++) {
                 block[i].x += rstPosDff;
             }
