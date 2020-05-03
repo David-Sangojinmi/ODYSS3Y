@@ -4,6 +4,7 @@ export default class gameStats {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.hp = 142;
+        this.onehp = 142/10;
         this.points = 0;
 
         // Loading images
