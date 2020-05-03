@@ -61,6 +61,7 @@ var gamepaused = false;
 var gameend = false;
 var lastTime = 0;
 var spriteCol = false;
+var rstPosDff = 0;
 var controller = {
     left: false,
     right: false,
@@ -194,7 +195,7 @@ function loop() {
             sprite.drawIdleSprite(ctx);
         }
         sprite.dY -= 16; // Jump height
-            sprite.jumping = true;
+        sprite.jumping = true;
     } else if (controller.left) {
         sprite.drawMovingLeft(ctx);
         sprite.dX -= 0.5;
@@ -214,6 +215,35 @@ function loop() {
     sprite.dX *= 0.89; // Friction
     sprite.dY *= 0.9; // Friction
 
+    if (sprite.position.x + sprite.width > 550) {
+        // Scroll left
+        bg.posGP.l1x -= sprite.dX * 0.2;
+        bg.posGP.l2x -= sprite.dX * 0.4;
+        bg.posGP.l3x -= sprite.dX * 0.6;
+        bg.posGP.l4x -= sprite.dX * 0.8;
+        for (var i = 0; i < block.length; i++) {
+            block[i].x -= sprite.dX;
+        }
+        sprite.position.x = 550 - sprite.width;
+    }
+    if (sprite.position.x < 250) {
+        // Scroll Right
+        bg.posGP.l1x -= sprite.dX * 0.2;
+        bg.posGP.l2x -= sprite.dX * 0.4;
+        bg.posGP.l3x -= sprite.dX * 0.6;
+        bg.posGP.l4x -= sprite.dX * 0.8;
+        for (var i = 0; i < block.length; i++) {
+            block[i].x -= sprite.dX;
+        }
+        sprite.position.x = 250;
+    }
+    if (sprite.position.x >= 250 && sprite.position.x <= 550) {
+        // Sprite moving
+        sprite.position.x += sprite.dX;
+    }
+}
+
+function collisionDetection() {
     // for (var i=0; i < block.length; i++) {
     //     if (block[i].id === 1) {
     //         if (sprite.position.y >= block[i].y - sprite.height - 20 &&
@@ -281,35 +311,25 @@ function loop() {
         sprite.dY = 0;
     }
 
-    if (sprite.position.x + sprite.width > 550) {
-        // Scroll left
-        bg.posGP.l1x -= sprite.dX * 0.2;
-        bg.posGP.l2x -= sprite.dX * 0.4;
-        bg.posGP.l3x -= sprite.dX * 0.6;
-        bg.posGP.l4x -= sprite.dX * 0.8;
-        for (var i = 0; i < block.length; i++) {
-            block[i].x -= sprite.dX;
-        }
-        sprite.position.x = 550 - sprite.width;
-    }
-    if (sprite.position.x < 250) {
-        // Scroll Right
-        bg.posGP.l1x -= sprite.dX * 0.2;
-        bg.posGP.l2x -= sprite.dX * 0.4;
-        bg.posGP.l3x -= sprite.dX * 0.6;
-        bg.posGP.l4x -= sprite.dX * 0.8;
-        for (var i = 0; i < block.length; i++) {
-            block[i].x -= sprite.dX;
+    if (sprite.position.y >= block[899].y + 40) {
+        gStats.hp -= gStats.onehp;
+        bg.posGP.l1x = 0;
+        bg.posGP.l2x = 0;
+        bg.posGP.l3x = 0;
+        bg.posGP.l4x = 0;
+        if (sprite.position.x > block[786].x) {
+            rstPosDff = 240 + Math.abs(block[786].x);
+            for (var i = 0; i < block.length; i++) {
+                block[i].x += rstPosDff;
+            }
+        } else if (sprite.position.x < block[786].x) {
+            rstPosDff = block[786].x - 240;
+            for (var i = 0; i < block.length; i++) {
+                block[i].x -= rstPosDff;
+            }
         }
         sprite.position.x = 250;
-    }
-    if (sprite.position.x >= 250 && sprite.position.x <= 550) {
-        // Sprite moving
-        sprite.position.x += sprite.dX;
-    }
-
-    if (sprite.y >= block[899].y + 40 || (sprite.x >= block[792].x && sprite.x <= block[795].x - 28) || sprite.x <= block[780].x - 28 || sprite.x >= block[839].x + 40) {
-        gStats.hp -= 1;
+        sprite.position.y = 300;
     }
 }
 
@@ -321,13 +341,13 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
-        // block[i].active(ctx, i);
+        block[i].active(ctx, i);
     }
     gStats.update(deltaTime);
     gStats.display(ctx);
 
     loop();
-    // sprite.displaySprite(ctx);
+    collisionDetection();
     coinCollision();
     sprite.update(deltaTime);
 
@@ -370,7 +390,7 @@ function gamePlay(timestamp) {
 //     }
 // });
 
-// For sprite movement and scrolling //
+// Handles key event //
 document.addEventListener("keydown", controller.keyListener);
 document.addEventListener("keyup", controller.keyListener);
 
