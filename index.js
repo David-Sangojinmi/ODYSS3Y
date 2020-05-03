@@ -186,9 +186,15 @@ function coinCollision() {
 
 function loop() {
     if (controller.up && sprite.jumping == false) {
-        sprite.drawIdleSprite(ctx);
+        if (controller.left) {
+            sprite.drawMovingLeft(ctx);
+        } else if (controller.right) {
+            sprite.drawMovingRight(ctx);
+        } else {
+            sprite.drawIdleSprite(ctx);
+        }
         sprite.dY -= 16; // Jump height
-        sprite.jumping = true;
+            sprite.jumping = true;
     } else if (controller.left) {
         sprite.drawMovingLeft(ctx);
         sprite.dX -= 0.5;
