@@ -323,6 +323,22 @@ function collisionDetection() {
         sprite.dY = 0;
     }
 
+    //   Horizontal block collision    //
+    for (var i = 0; i < block.length; i++) {
+        if (block[i].id === 3) {
+            // Fix bug
+            if (block[i].y + 40 > sprite.position.y && block[i].y + 40 < sprite.position.y + sprite.spritesheetHeight && block[i-1].id === 0 && block[i-61].id === 0) {
+                if (sprite.position.x >= block[i].x - sprite.spriteWidth) {
+                    sprite.position.x = block[i].x - sprite.spriteWidth;
+                }
+                // if (sprite.position.x = block[i].x + 40) {
+                //     sprite.position.x = block[i].x + 40;
+                // }
+            }
+        }
+    }
+
+    //         Falling off edge        //
     if (sprite.position.y >= block[899].y + 40) {
         gStats.hp -= gStats.onehp;
         bg.posGP.l1x = 0;
