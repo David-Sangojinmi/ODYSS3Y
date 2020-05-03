@@ -5,10 +5,11 @@ Terrain tile set:
 Sprite sheets: 
 To-Do:
     [X] Better player terrain interaction
-    [ ] Animate player moving left/right and jump
+    [X] Animate player moving left/right and jump
+    [X] Implement general collision detection for blocks
     [ ] Allow recognition for which type of collision is happening (l/r/u/d)
     [ ] Player shouldn't be able to double jump through platforms
-    [ ] Player should lose hp when he falls in ditches
+    [X] Player should lose hp when he falls in ditches
     [~] Fix the bug with the pause button
         [X] Removed pause button for now
     [X] Make each terrain tile an object
