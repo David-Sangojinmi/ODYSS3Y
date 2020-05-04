@@ -17,13 +17,13 @@ export default class Block {
 
     drawBlock(ctx) {
         switch (this.id) {
-            case 1:
+            case 1: // Ground top middle
                 ctx.drawImage(this.terrainSet, 160, 80, 16, 16, this.x, this.y, this.w, this.h);
                 break;
-            case 2:
+            case 2: // Ground bottom middle
                 ctx.drawImage(this.terrainSet, 160, 96, 16, 16, this.x, this.y, this.w, this.h);
                 break;
-            case 3:
+            case 3: // In air block
                 ctx.drawImage(this.terrainSet, 48, 80, 16, 16, this.x, this.y, this.w, this.h);
                 break;
             case 4: // Ground top left
