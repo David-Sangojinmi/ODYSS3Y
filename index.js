@@ -6,9 +6,10 @@ Sprite sheets:
 To-Do:
     [X] Better player terrain interaction
     [X] Animate player moving left/right and jump
-    [ ] Implement general collision detection for blocks
-    [ ] Allow recognition for which type of collision is happening (l/r/u/d)
-    [ ] Player shouldn't be able to double jump through platforms
+    [X] Implement general collision detection for blocks
+    [X] Allow recognition for which type of collision is happening (l/r/u/d)
+    [X] Player shouldn't be able to double jump through platforms
+    [ ] Fix bug that makes sprite jump to raised platform
     [X] Player should lose hp when he falls in ditches
         [X] Fix the spawning bug after falling off platform
     [~] Fix the bug with the pause button
