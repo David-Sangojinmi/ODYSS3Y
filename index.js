@@ -3,19 +3,24 @@ Author: David Sangojinmi
 Background image: https://craftpix.net/freebies/free-horizontal-2d-game-backgrounds/?utm_source=opengameart&utm_medium=public&utm_campaign=myself
 Terrain tile set: 
 Sprite sheets: 
-To-Do:
+TODO:
     [X] Better player terrain interaction
     [X] Animate player moving left/right and jump
     [X] Implement general collision detection for blocks
     [X] Allow recognition for which type of collision is happening (l/r/u/d)
     [X] Player shouldn't be able to double jump through platforms
-    [ ] Fix bug that makes sprite jump to raised platform
     [X] Player should lose hp when he falls in ditches
-        [X] Fix the spawning bug after falling off platform
-    [~] Fix the bug with the pause button
-        [X] Removed pause button for now
     [X] Make each terrain tile an object
         [X] And then try rewriting the collision logic
+    [ ] Add moving enemies
+    [ ] Add a portal at the end of each level
+    [ ] Add more levels
+FIXME:
+    [X] Fix the spawning bug after falling off platform
+    [~] Fix the bug with the pause button
+        [X] Removed pause button for now
+    [ ] Fix bug that makes sprite jump to raised platform instead of going
+        underneath them
 */
 
 var cvs = document.getElementById("gameScreen");
@@ -31,7 +36,7 @@ import Background from "./src/background.js";
 import gameScreens from "./src/gameScreens.js";
 import gameStats from "./src/gameStats.js";
 import Block from "./src/block.js";
-// import Coin from "./coins.js";
+import EndPoint from "./src/endpoint.js";
 
 // Load any images
 // var background = new Image();
@@ -45,7 +50,7 @@ jump.src = "sounds/jump.wav";
 getCoin.src = "sounds/coin.wav";
 click.src = "sounds/click.wav";
 
-// Important variables
+// Important variables and instances
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
 let platform = new Platform(GAME_WIDTH, GAME_HEIGHT);
 let block = [];
@@ -60,7 +65,6 @@ for (var i = 0; i < platform.level1.length; i++) {
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
 let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
-// let coinS = new Coin();
 var gamestart = true;
 var gameinstructions = false;
 var gameplay = false;
@@ -329,13 +333,15 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < block.length; i++) {
         block[i].drawBlock(ctx);
-        block[i].active(ctx, i);
+        if (block[i].id != 0) {
+            block[i].active(ctx, i);
+        }
     }
     gStats.update(deltaTime);
     gStats.display(ctx);
 
-    collisionDetection();
     loop();
+    collisionDetection();
     coinCollision();
     sprite.update(deltaTime);
 
