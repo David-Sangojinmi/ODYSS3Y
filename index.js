@@ -66,7 +66,6 @@ var gameplay = false;
 var gamepaused = false;
 var gameend = false;
 var lastTime = 0;
-var spriteCol = false;
 var rstPosDff = 0;
 var controller = {
     left: false,
@@ -211,11 +210,9 @@ function loop() {
     } else if (controller.left) {
         sprite.drawMovingLeft(ctx);
         sprite.dX -= 0.5;
-        // sprite.movingLeft = true;
     } else if (controller.right) {
         sprite.drawMovingRight(ctx);
         sprite.dX += 0.5;
-        // sprite.movingRight = true;
     } else {
         sprite.drawIdleSprite(ctx);
     }
@@ -253,25 +250,48 @@ function loop() {
         // Sprite moving
         sprite.position.x += sprite.dX;
     }
+
 }
 
 function collisionDetection() {
-    // if (
-    //     (sprite.position.y >= block[780].y - sprite.height - 20 && sprite.position.x >= block[780].x - 1 - 28 && sprite.position.x <= block[792].x - 8) ||
-    //     (sprite.position.y >= block[795].y - sprite.height - 20 && sprite.position.x >= block[795].x - 1 - 28 && sprite.position.x <= block[802].x - 8) ||
-    //     (sprite.position.y >= block[807].y - sprite.height - 20 && sprite.position.x >= block[807].x - 1 - 28 && sprite.position.x <= block[839].x + 40 - 8)
-    // ) {
-    //     // Sprite falling below floor
-    //     sprite.jumping = false;
-    //     sprite.position.y = block[780].y - sprite.spritesheetHeight;
-    //     sprite.dY = 0;
-    // }
 
     for (var i = 0; i < block.length; i++) {
         if (block[i].id != 0 && block[i].id != 9 && block[i].id != 10 && sprite.position.x + 15 >= block[i].x && sprite.position.x + 15 <= block[i].x + 40 && sprite.position.y + 72 >= block[i].y) {
             sprite.jumping = false;
             sprite.position.y = block[i].y - 72;
             sprite.dY = 0;
+            ctx.fillStyle = "#03fcf0";
+            ctx.fillRect(block[i].x, block[i].y, 40, 5);
+            if (sprite.position.x > block[1].x && sprite.position.x < block[898].x && i >= 180 && i <= 898) {
+                if (block[i - 59].id != 0 && block[i - 59].id != 9 && block[i - 59].id != 10) {
+                    // sprite.position.x = block[i - 59].x - 30;
+                    if (controller.right) {
+                        sprite.dX -= 0.5;
+                    }
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(block[i - 59].x, block[i - 59].y, 5, 40);
+                } else if (block[i - 119].id != 0 && block[i - 119].id != 9 && block[i - 119].id != 10) {
+                    // sprite.position.x = block[i - 59].x - 30;
+                    if (controller.right) {
+                        sprite.dX -= 0.5;
+                    }
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(block[i - 119].x, block[i - 119].y, 5, 40);
+                }
+                if (block[i - 61].id != 0 && block[i - 61].id != 9 && block[i - 61].id != 10) {
+                    if (controller.left) {
+                        sprite.dX += 0.5;
+                    }
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(block[i - 61].x + 35, block[i - 61].y, 5, 40);
+                } else if (block[i - 121].id != 0 && block[i - 121].id != 9 && block[i - 121].id != 10) {
+                    if (controller.left) {
+                        sprite.dX += 0.5;
+                    }
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(block[i - 121].x + 35, block[i - 121].y, 5, 40);
+                }
+            }
         }
     }
 
@@ -331,8 +351,8 @@ function gamePlay(timestamp) {
     gStats.update(deltaTime);
     gStats.display(ctx);
 
-    loop();
     collisionDetection();
+    loop();
     coinCollision();
     sprite.update(deltaTime);
 
