@@ -13,7 +13,7 @@ TODO:
     [X] Make each terrain tile an object
         [X] And then try rewriting the collision logic
     [ ] Add moving enemies
-    [ ] Add a portal at the end of each level
+    [X] Add a portal at the end of each level
     [ ] Add more levels
 FIXME:
     [X] Fix the spawning bug after falling off platform
@@ -21,6 +21,8 @@ FIXME:
         [X] Removed pause button for now
     [ ] Fix bug that makes sprite jump to raised platform instead of going
         underneath them
+    [ ] Sprite reaching portal should end game or move to next level
+    [ ] Fix game end screen not stopping all other scrips
 */
 
 var cvs = document.getElementById("gameScreen");
@@ -78,7 +80,7 @@ for (var i = 0; i < platform.level1.length; i++) {
 //     }
 // }
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
-let level1Portal = new EndPoint(level1block[839].x + 80, level1block[839].y - 120);
+let level1Portal = new EndPoint(level1block[839].x + 40, level1block[839].y - 120);
 // let level2Portal = new EndPoint(level2block[899].x + 120, level2block[899].y, 60, 80);
 // let level3Portal = new EndPoint(level3block[899].x + 120, level3block[899].y, 60, 80);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
@@ -278,15 +280,16 @@ function loop() {
 }
 
 function collisionDetection() {
-    //   Horizontal block collision   //
+    //    Horizontal block collision   //
     for (var i = 0; i < level1block.length; i++) {
         if (
             level1block[i].id != 0 &&
             level1block[i].id != 9 &&
             level1block[i].id != 10 &&
             sprite.position.x + 15 >= level1block[i].x &&
-            sprite.position.x + 15 <= level1block[i].x + 40 &&
-            sprite.position.y + 72 >= level1block[i].y
+            sprite.position.x <= level1block[i].x + 40 - 15 &&
+            sprite.position.y >= level1block[i].y - 72 &&
+            i > 639
         ) {
             sprite.jumping = false;
             sprite.position.y = level1block[i].y - 72;
@@ -349,8 +352,19 @@ function collisionDetection() {
         }
         sprite.position.x = 250;
         sprite.position.y = 300;
-        level1Portal.x = level1block[839].x + 80;
+        level1Portal.x = level1block[839].x + 40;
         level1Portal.y = level1block[839].y - 120;
+    }
+
+    //         Portal detection        //
+    if (sprite.position.x > level1Portal.x && sprite.position.x <= level1Portal.x + + 50 && sprite.position.y > level1Portal.y && sprite.position.y && level1Portal.y + 120 - 72) {
+        sprite.position.x = level1block[839].x + 70;
+        sprite.position.y = level1block[839].y - 36;
+        gamestart = false;
+        gameinstructions = false;
+        gameplay = false;
+        gameend = true;
+        gameLoop();
     }
 }
 
@@ -420,7 +434,8 @@ document.addEventListener("keyup", controller.keyListener);
 
 function gameEnd() {
     // ctx.drawImage(background, 0, 0);
-    ctx.fillStyle = "rgba(0, 0, 0, 0.87)";
+    ctx.clearRect(0, 0, 800, 600);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     // Draw resume button
     ctx.fillStyle = "rgb(0, 200, 0)";
@@ -436,19 +451,17 @@ function gameEnd() {
 function gameLoop() {
     if (gamestart == true) {
         gameStart();
-    }
-    if (gameinstructions == true) {
+    } else if (gameinstructions == true) {
         gameInstructions();
-    }
-    if (gameplay == true) {
+    } else if (gameplay == true) {
         gamePlay();
+    } else if (gameend == true) {
+        gameEnd();
     }
     // if (gamepaused == true) {
     //     gamePaused();
     // }
-    if (gameend == true) {
-        gameEnd();
-    }
+    
 }
 
 gameLoop();
