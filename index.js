@@ -88,7 +88,7 @@ let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
 var gamestart = true;
 var gameinstructions = false;
 var gameplay = false;
-var gamepaused = false;
+// var gamepaused = false;
 var gameend = false;
 var lastTime = 0;
 var rstPosDff = 0;
@@ -279,7 +279,7 @@ function loop() {
     }
 }
 
-function collisionDetection() {
+function collisionDetection(levelParameter, portalParameter) {
     //    Horizontal block collision   //
     for (var i = 0; i < level1block.length; i++) {
         if (
@@ -357,9 +357,9 @@ function collisionDetection() {
     }
 
     //         Portal detection        //
-    if (sprite.position.x > level1Portal.x && sprite.position.x <= level1Portal.x + + 50 && sprite.position.y > level1Portal.y && sprite.position.y && level1Portal.y + 120 - 72) {
-        sprite.position.x = level1block[839].x + 70;
-        sprite.position.y = level1block[839].y - 36;
+    if (sprite.position.x > portalParameter.x && sprite.position.x <= portalParameter.x + +50 && sprite.position.y > portalParameter.y && sprite.position.y && portalParameter.y + 120 - 72) {
+        sprite.position.x = levelParameter[839].x + 70;
+        sprite.position.y = levelParameter[839].y - 36;
         gamestart = false;
         gameinstructions = false;
         gameplay = false;
@@ -385,7 +385,7 @@ function gamePlay(timestamp) {
 
     level1Portal.display(ctx);
     loop();
-    collisionDetection();
+    collisionDetection(level1block, level1Portal);
     coinCollision();
     sprite.update(deltaTime);
 
@@ -449,19 +449,21 @@ function gameEnd() {
 ////     GAMEPLAY INIT     ////
 ///////////////////////////////
 function gameLoop() {
-    if (gamestart == true) {
+    if (gamestart === true) {
         gameStart();
-    } else if (gameinstructions == true) {
+    }
+    if (gameinstructions === true) {
         gameInstructions();
-    } else if (gameplay == true) {
+    }
+    if (gameplay === true) {
         gamePlay();
-    } else if (gameend == true) {
-        gameEnd();
     }
     // if (gamepaused == true) {
     //     gamePaused();
     // }
-    
+    if (gameend === true) {
+        gameEnd();
+    }
 }
 
 gameLoop();
