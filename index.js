@@ -38,6 +38,7 @@ import Background from "./src/background.js";
 import gameScreens from "./src/gameScreens.js";
 import gameStats from "./src/gameStats.js";
 import Block from "./src/block.js";
+import Enemy from "./src/enemy.js";
 import EndPoint from "./src/endpoint.js";
 
 // Load any images
@@ -49,8 +50,8 @@ var jump = new Audio();
 var getCoin = new Audio();
 var click = new Audio();
 jump.src = "sounds/jump.wav";
-getCoin.src = "sounds/coin.wav";
-click.src = "sounds/click.wav";
+getCoin.src = "sounds/coinCollect.wav";  // Coin sounds: coin | coinCollect
+click.src = "sounds/buttonClick1.wav";  // Button sounds: click | buttonClick1 | buttonClick2
 
 // Important variables and instances
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
@@ -85,6 +86,9 @@ let level1Portal = new EndPoint(level1block[839].x + 40, level1block[839].y - 12
 // let level3Portal = new EndPoint(level3block[899].x + 120, level3block[899].y, 60, 80);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
 let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
+let enemy = [];
+enemy[0] = new Enemy(level1block[740].x, level1block[740].y, level1block[735].x, level1block[741].x, 3, 3);
+enemy[1] = new Enemy(level1block[770].x, level1block[770].y, level1block[759].x, level1block[771].x, 4, 4);
 var gamestart = true;
 var gameinstructions = false;
 var gameplay = false;
@@ -203,6 +207,7 @@ function coinCollision() {
                 level1block[i].coinActive = false;
                 getCoin.play();
                 gStats.points += 1;
+                gScreens.coin1Count += 1;
             }
         } else if (level1block[i].id === 10) {
             if (
@@ -215,6 +220,7 @@ function coinCollision() {
                 level1block[i].coinActive = false;
                 getCoin.play();
                 gStats.points += 3;
+                gScreens.coin2Count += 1;
             }
         }
     }
@@ -255,6 +261,11 @@ function loop() {
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
+        for (var i = 0; i < enemy.length; i++) {
+            enemy[i].x -= sprite.dX;
+            enemy[i].xLBound -= sprite.dX;
+            enemy[i].xRBound -= sprite.dX;
+        }
         level1Portal.x -= sprite.dX;
         for (var i = 0; i < level1block.length; i++) {
             level1block[i].x -= sprite.dX;
@@ -267,6 +278,11 @@ function loop() {
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
+        for (var i = 0; i < enemy.length; i++) {
+            enemy[i].x -= sprite.dX;
+            enemy[i].xLBound -= sprite.dX;
+            enemy[i].xRBound -= sprite.dX;
+        }
         level1Portal.x -= sprite.dX;
         for (var i = 0; i < level1block.length; i++) {
             level1block[i].x -= sprite.dX;
@@ -350,6 +366,12 @@ function collisionDetection(levelParameter, portalParameter) {
                 level1block[i].x -= rstPosDff;
             }
         }
+        for (var i = 0; i < enemy.length; i++) {
+            enemy[i].x = level1block[740].x;
+            enemy[i].y = level1block[740].y;
+            enemy[i].xLBound = level1block[735].x;
+            enemy[i].xRBound = level1block[741].x;
+        }
         sprite.position.x = 250;
         sprite.position.y = 300;
         level1Portal.x = level1block[839].x + 40;
@@ -381,12 +403,16 @@ function gamePlay(timestamp) {
         }
     }
     gStats.update(deltaTime);
-    gStats.display(ctx);
+    gStats.display(ctx, (gScreens.coin1Count + 3 * gScreens.coin2Count));
 
     level1Portal.display(ctx);
     loop();
     collisionDetection(level1block, level1Portal);
     coinCollision();
+    for (var i = 0; i < enemy.length; i++) {
+        enemy[i].display(ctx);
+        enemy[i].patrol();
+    }
     sprite.update(deltaTime);
 
     // coinCollision();
@@ -435,12 +461,8 @@ document.addEventListener("keyup", controller.keyListener);
 function gameEnd() {
     // ctx.drawImage(background, 0, 0);
     ctx.clearRect(0, 0, 800, 600);
-    ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
-    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    // Draw resume button
-    ctx.fillStyle = "rgb(0, 200, 0)";
-    ctx.fillRect(300, 150, 200, 100);
-    ctx.fillRect(300, 350, 200, 100);
+
+    gScreens.endScreen(ctx);
 
     window.requestAnimationFrame(gameEnd);
 }
