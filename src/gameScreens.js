@@ -50,14 +50,13 @@ export default class gameScreens {
         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, 800, 600);
         ctx.drawImage(this.gameendBoard, 72, 0);
-        ctx.font = "50px papryus";
-        ctx.fillStyle = "white";
-        ctx.fillText("GAME OVER", 250, 200);
         // Display the number of coins
-        ctx.font = "30px papryus";
-        ctx.fillText(this.levelReached, 400, 267);
-        ctx.fillText(this.coin1Count, 380, 317);
-        ctx.fillText(this.coin2Count, 380, 367);
+        ctx.font = "40px pr celtic narrow";
+        ctx.fillStyle = "white";
+        ctx.fillText(this.levelReached, 400, 264);
+        ctx.fillText(this.coin1Count, 373, 328);
+        ctx.fillText(this.coin2Count, 373, 391);
+        ctx.fillText(this.coin1Count + 3*this.coin2Count, 371, 455);
         // Eventually add a replay option
     }
 
