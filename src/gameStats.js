@@ -27,7 +27,7 @@ export default class gameStats {
 
         // Points
         ctx.drawImage(this.coin, 601, 61);
-        ctx.font = "30px candara";
+        ctx.font = "30px pr celtic narrow";
         ctx.fillStyle = "white";
         ctx.fillText("x " + coinTotalAmt, 640, 86);
 
