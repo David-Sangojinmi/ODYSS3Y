@@ -10,9 +10,7 @@ export default class gameScreens {
         this.gameBack = new Image();
         this.gameNext = new Image();
         this.background = new Image();
-        this.backBoard = new Image();
-        this.coin1 = new Image();
-        this.coin2 = new Image();
+        this.gameendBoard = new Image();
         this.gameTitle.src = "images/gameTitle.png";
         this.playBtn1.src = "images/play.png";
         this.playBtn2.src = "images/playBig.png";
@@ -20,12 +18,10 @@ export default class gameScreens {
         this.gameBack.src = "images/back.png";
         this.gameNext.src = "images/next.png";
         this.background.src = "images/background.png";
-        this.backBoard.src = "images/backboard.png";
-        this.coin1.src = "images/coin.png";
-        this.coin2.src = "images/coin2.png";
+        this.gameendBoard.src = "images/gameEndBoard.png";
         this.bgposX = 0;
         this.bgposY = 0;
-        this.levelReached = 0;
+        this.levelReached = 1;
         this.coin1Count = 0;
         this.coin2Count = 0;
     }
@@ -53,16 +49,15 @@ export default class gameScreens {
         ctx.drawImage(this.background, this.bgposX, this.bgposY);
         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, 800, 600);
-        ctx.drawImage(this.backBoard, 72, 0);
-        ctx.font = "50px arial";
+        ctx.drawImage(this.gameendBoard, 72, 0);
+        ctx.font = "50px papryus";
         ctx.fillStyle = "white";
-        ctx.fillText("GAME OVER", 300, 300);
+        ctx.fillText("GAME OVER", 250, 200);
         // Display the number of coins
-        ctx.fillText("Level reached: " + this.levelReached, 200, 417);
-        ctx.drawImage(this.coin1, 200, 467);
-        ctx.fillText("gained: " + this.coin1Count, 230, 467);
-        ctx.drawImage(this.coin2, 200, 517);
-        ctx.fillText("gained: " + this.coin2Count, 230, 517);
+        ctx.font = "30px papryus";
+        ctx.fillText(this.levelReached, 400, 267);
+        ctx.fillText(this.coin1Count, 380, 317);
+        ctx.fillText(this.coin2Count, 380, 367);
         // Eventually add a replay option
     }
 
