@@ -16,7 +16,7 @@ export default class gameStats {
         this.coin.src = "images/coin.png";
     }
 
-    display(ctx) {
+    display(ctx, coinTotalAmt) {
         // Health bar
         ctx.fillStyle = "#29de00";
         ctx.fillRect(628, 21, this.hp, 27);
@@ -29,7 +29,7 @@ export default class gameStats {
         ctx.drawImage(this.coin, 601, 61);
         ctx.font = "30px candara";
         ctx.fillStyle = "white";
-        ctx.fillText("x " + this.points, 640, 86);
+        ctx.fillText("x " + coinTotalAmt, 640, 86);
 
         // Game pause button
         // ctx.drawImage(this.pause, 17, 17);
