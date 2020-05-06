@@ -32,7 +32,7 @@ export default class gameStats {
         ctx.fillText("x " + coinTotalAmt, 640, 86);
 
         // Game pause button
-        // ctx.drawImage(this.pause, 17, 17);
+        ctx.drawImage(this.pause, 17, 17);
     }
 
     update(deltaTime) {
