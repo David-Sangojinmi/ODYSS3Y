@@ -49,9 +49,11 @@ import EndPoint from "./src/endpoint.js";
 var jump = new Audio();
 var getCoin = new Audio();
 var click = new Audio();
+var playerHurt = new Audio();
 jump.src = "sounds/jump.wav";
-getCoin.src = "sounds/coinCollect.wav";  // Coin sounds: coin | coinCollect
-click.src = "sounds/buttonClick1.wav";  // Button sounds: click | buttonClick1 | buttonClick2
+getCoin.src = "sounds/coinCollect.wav"; // Coin sounds: coin | coinCollect
+click.src = "sounds/buttonClick1.wav"; // Button sounds: click | buttonClick1 | buttonClick2
+playerHurt.src = "sounds/hurt.wav";
 
 // Important variables and instances
 let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
@@ -226,6 +228,17 @@ function coinCollision() {
     }
 }
 
+function enemyCollision() {
+    for (var i = 0; i < enemy.length; i++) {
+        if (sprite.position.x >= enemy[i].x - 29 && sprite.position.x <= enemy[i].x + 40 && enemy[i].y >= sprite.position.y - 40 && enemy[i].y <= sprite.position.y + sprite.spritesheetHeight) {
+            ctx.fillStyle = "red";
+            ctx.fillRect(sprite.position.x, sprite.position.y - 10, 30, 3);
+            playerHurt.play();
+            gStats.hp -= gStats.onehp / 2;
+        }
+    }
+}
+
 function loop() {
     if (controller.up && sprite.jumping == false) {
         if (controller.left) {
@@ -366,12 +379,14 @@ function collisionDetection(levelParameter, portalParameter) {
                 level1block[i].x -= rstPosDff;
             }
         }
-        for (var i = 0; i < enemy.length; i++) {
-            enemy[i].x = level1block[740].x;
-            enemy[i].y = level1block[740].y;
-            enemy[i].xLBound = level1block[735].x;
-            enemy[i].xRBound = level1block[741].x;
-        }
+        enemy[0].x = level1block[740].x;
+        enemy[0].y = level1block[740].y;
+        enemy[0].xLBound = level1block[735].x;
+        enemy[0].xRBound = level1block[741].x;
+        enemy[1].x = level1block[770].x;
+        enemy[1].y = level1block[770].y;
+        enemy[1].xLBound = level1block[759].x;
+        enemy[1].xRBound = level1block[771].x;
         sprite.position.x = 250;
         sprite.position.y = 300;
         level1Portal.x = level1block[839].x + 40;
@@ -399,11 +414,11 @@ function gamePlay(timestamp) {
     for (var i = 0; i < level1block.length; i++) {
         level1block[i].drawBlock(ctx);
         if (level1block[i].id != 0) {
-            level1block[i].active(ctx, i);
+            // level1block[i].active(ctx, i);
         }
     }
     gStats.update(deltaTime);
-    gStats.display(ctx, (gScreens.coin1Count + 3 * gScreens.coin2Count));
+    gStats.display(ctx, gScreens.coin1Count + 3 * gScreens.coin2Count);
 
     level1Portal.display(ctx);
     loop();
@@ -413,11 +428,14 @@ function gamePlay(timestamp) {
         enemy[i].display(ctx);
         enemy[i].patrol();
     }
+    enemyCollision();
     sprite.update(deltaTime);
 
     // coinCollision();
 
-    window.requestAnimationFrame(gamePlay);
+    if (gameplay === true) {
+        window.requestAnimationFrame(gamePlay);
+    }
 }
 
 // function gamePaused() {
