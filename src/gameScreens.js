@@ -12,7 +12,6 @@ export default class gameScreens {
         this.gameNext = new Image();
         this.background = new Image();
         this.gameendBoard = new Image();
-        this.fadescreen = new Image();
         this.gameTitle.src = "images/gameTitle.png";
         this.playBtn1.src = "images/play.png";
         this.continueBtn.src = "images/continue.png";
@@ -22,7 +21,6 @@ export default class gameScreens {
         this.gameNext.src = "images/next.png";
         this.background.src = "images/background.png";
         this.gameendBoard.src = "images/gameEndBoard.png";
-        this.fadescreen.src = "images/fadescreen.png";
         this.bgposX = 0;
         this.bgposY = 0;
         this.levelReached = 1;
@@ -48,7 +46,8 @@ export default class gameScreens {
     }
 
     pauseScreen(ctx) {
-        ctx.drawImage(this.fadescreen, 0, 0);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, 800, 600);
         // Player goes back to game
         ctx.drawImage(this.continueBtn, 305, 181);
         // Player ends game

@@ -167,7 +167,6 @@ function gameInstructions(timestamp) {
 }
 
 document.addEventListener("click", (instructionsev) => {
-    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gameinstructions === true) {
         if (
             instructionsev.clientX >= 565 + winRect.left + 2 &&
@@ -450,26 +449,26 @@ function gamePaused() {
 }
 
 document.addEventListener("click", (evnt) => {
-    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gameplay === true && gamepaused === false) {
         if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
+            click.play();
             gamepaused = true;
             gameplay = false;
-
             gameLoop();
         }
     }
 });
 
 document.addEventListener("click", (pauseevnt) => {
-    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gamepaused === true && gameplay === false) {
         if (pauseevnt.clientX >= 305 + winRect.left + 2 && pauseevnt.clientX <= 495 + winRect.left + 2 && pauseevnt.clientY >= 181 + winRect.top + 2 && pauseevnt.clientY <= 275 + winRect.top + 2) {
+            click.play();
             gamepaused = false;
             gameplay = true;
             gameLoop();
         }
         if (pauseevnt.clientX >= 305 + winRect.left + 2 && pauseevnt.clientX <= 495 + winRect.left + 2 && pauseevnt.clientY >= 325 + winRect.top + 2 && pauseevnt.clientY <= 419 + winRect.top + 2) {
+            click.play();
             gamepaused = false;
             gameplay = false;
             gameend = true;
@@ -478,12 +477,11 @@ document.addEventListener("click", (pauseevnt) => {
     }
 });
 
-// Handles key event //
+// Handles key events //
 document.addEventListener("keydown", controller.keyListener);
 document.addEventListener("keyup", controller.keyListener);
 
 function gameEnd() {
-    // ctx.drawImage(background, 0, 0);
     ctx.clearRect(0, 0, 800, 600);
 
     gScreens.endScreen(ctx);
