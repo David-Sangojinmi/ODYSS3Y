@@ -12,7 +12,7 @@ TODO:
     [X] Player should lose hp when he falls in ditches
     [X] Make each terrain tile an object
         [X] And then try rewriting the collision logic
-    [ ] Add moving enemies
+    [X] Add moving enemies
     [X] Add a portal at the end of each level
     [ ] Add more levels
 FIXME:
@@ -21,8 +21,8 @@ FIXME:
         [X] Removed pause button for now
     [ ] Fix bug that makes sprite jump to raised platform instead of going
         underneath them
-    [ ] Sprite reaching portal should end game or move to next level
-    [ ] Fix game end screen not stopping all other scrips
+    [X] Sprite reaching portal should end game or move to next level
+    [X] Fix game end screen not stopping all other scrips
 */
 
 var cvs = document.getElementById("gameScreen");
