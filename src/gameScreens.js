@@ -5,20 +5,24 @@ export default class gameScreens {
 
         this.gameTitle = new Image();
         this.playBtn1 = new Image();
-        this.playBtn2 = new Image();
+        this.continueBtn = new Image();
+        this.endgameBtn = new Image();
         this.gameInstruction = new Image();
         this.gameBack = new Image();
         this.gameNext = new Image();
         this.background = new Image();
         this.gameendBoard = new Image();
+        this.fadescreen = new Image();
         this.gameTitle.src = "images/gameTitle.png";
         this.playBtn1.src = "images/play.png";
-        this.playBtn2.src = "images/playBig.png";
+        this.continueBtn.src = "images/continue.png";
+        this.endgameBtn.src = "images/endgame.png";
         this.gameInstruction.src = "images/instructions.png";
         this.gameBack.src = "images/back.png";
         this.gameNext.src = "images/next.png";
         this.background.src = "images/background.png";
         this.gameendBoard.src = "images/gameEndBoard.png";
+        this.fadescreen.src = "images/fadescreen.png";
         this.bgposX = 0;
         this.bgposY = 0;
         this.levelReached = 1;
@@ -43,7 +47,13 @@ export default class gameScreens {
         ctx.drawImage(this.gameNext, 565, 415);
     }
 
-    pauseScreen(ctx) {}
+    pauseScreen(ctx) {
+        ctx.drawImage(this.fadescreen, 0, 0);
+        // Player goes back to game
+        ctx.drawImage(this.continueBtn, 305, 181);
+        // Player ends game
+        ctx.drawImage(this.endgameBtn, 305, 325);
+    }
 
     endScreen(ctx) {
         ctx.drawImage(this.background, this.bgposX, this.bgposY);

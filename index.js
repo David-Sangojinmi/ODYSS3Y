@@ -40,10 +40,6 @@ import Block from "./src/block.js";
 import Enemy from "./src/enemy.js";
 import EndPoint from "./src/endpoint.js";
 
-// Load any images
-// var background = new Image();
-// background.src = "images/bg6-3.jpg";
-
 // Load audio
 var jump = new Audio();
 var getCoin = new Audio();
@@ -133,7 +129,9 @@ function gameStart(timestamp) {
     gScreens.update(deltaTime);
     gScreens.startScreen(ctx);
 
-    window.requestAnimationFrame(gameStart);
+    if (gamestart === true) {
+        window.requestAnimationFrame(gameStart);
+    }
 }
 
 document.addEventListener("click", (ev) => {
@@ -163,7 +161,9 @@ function gameInstructions(timestamp) {
     gScreens.update(deltaTime);
     gScreens.gameInstructions(ctx);
 
-    window.requestAnimationFrame(gameInstructions);
+    if (gameinstructions === true) {
+        window.requestAnimationFrame(gameInstructions);
+    }
 }
 
 document.addEventListener("click", (instructionsev) => {
@@ -442,13 +442,7 @@ function gamePlay(timestamp) {
 }
 
 function gamePaused() {
-    ctx.fillStyle = "rgba(100, 100, 100, 0.7)";
-    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    // Draw resume button
-    ctx.fillStyle = "rgb(0, 200, 0)";
-    ctx.fillRect(300, 150, 200, 100);
-    ctx.fillRect(300, 350, 200, 100);
-    sprite.fpsCount = 0;
+    gScreens.pauseScreen(ctx);
 
     if (gamepaused === true) {
         window.requestAnimationFrame(gamePaused);
@@ -457,7 +451,7 @@ function gamePaused() {
 
 document.addEventListener("click", (evnt) => {
     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    if (gameplay === true) {
+    if (gameplay === true && gamepaused === false) {
         if (evnt.clientX >= 17 + winRect.left + 2 && evnt.clientX <= 17 + 34 + winRect.left + 2 && evnt.clientY >= 17 + winRect.top + 2 && evnt.clientY <= 17 + 35 + winRect.top + 2) {
             gamepaused = true;
             gameplay = false;
@@ -469,10 +463,16 @@ document.addEventListener("click", (evnt) => {
 
 document.addEventListener("click", (pauseevnt) => {
     // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    if (gamepaused === true) {
-        if (pauseevnt.clientX >= 300 + winRect.left + 2 && pauseevnt.clientX <= 500 + winRect.left + 2 && pauseevnt.clientY >= 150 + winRect.top + 2 && pauseevnt.clientY <= 250 + winRect.top + 2) {
+    if (gamepaused === true && gameplay === false) {
+        if (pauseevnt.clientX >= 305 + winRect.left + 2 && pauseevnt.clientX <= 495 + winRect.left + 2 && pauseevnt.clientY >= 181 + winRect.top + 2 && pauseevnt.clientY <= 275 + winRect.top + 2) {
             gamepaused = false;
             gameplay = true;
+            gameLoop();
+        }
+        if (pauseevnt.clientX >= 305 + winRect.left + 2 && pauseevnt.clientX <= 495 + winRect.left + 2 && pauseevnt.clientY >= 325 + winRect.top + 2 && pauseevnt.clientY <= 419 + winRect.top + 2) {
+            gamepaused = false;
+            gameplay = false;
+            gameend = true;
             gameLoop();
         }
     }
