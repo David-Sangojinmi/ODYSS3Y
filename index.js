@@ -21,6 +21,7 @@ FIXME:
     [ ] Fix bug that makes sprite jump to raised platform instead of going
         underneath them
     [X] Sprite reaching portal should end game or move to next level
+    [X] Portals on level 2 and 3 not appearing
     [X] Fix game end screen not stopping all other scrips
 */
 
@@ -55,22 +56,22 @@ let bg = new Background(GAME_WIDTH, GAME_HEIGHT);
 let platform = new Platform(GAME_WIDTH, GAME_HEIGHT);
 let level1block = [];
 let level1blockCount = 0;
+let level2block = [];
+let level2blockCount = 0;
+let level3block = [];
+let level3blockCount = 0;
 for (var i = 0; i < platform.level1.length; i++) {
     for (var j = 0; j < platform.level1[i].length; j++) {
         level1block[level1blockCount] = new Block(j * 40, i * 40, 40, 40, platform.level1[i][j]);
         level1blockCount++;
     }
 }
-let level2block = [];
-let level2blockCount = 0;
 for (var i = 0; i < platform.level2.length; i++) {
     for (var j = 0; j < platform.level2[i].length; j++) {
         level2block[level2blockCount] = new Block(j * 40, i * 40, 40, 40, platform.level2[i][j]);
         level2blockCount++;
     }
 }
-let level3block = [];
-let level3blockCount = 0;
 for (var i = 0; i < platform.level3.length; i++) {
     for (var j = 0; j < platform.level3[i].length; j++) {
         level3block[level3blockCount] = new Block(j * 40, i * 40, 40, 40, platform.level3[i][j]);
@@ -80,16 +81,19 @@ for (var i = 0; i < platform.level3.length; i++) {
 let activelevel = [level1block, level2block, level3block];
 let currentlevel = 1;
 let sprite = new Sprite(GAME_WIDTH, GAME_HEIGHT);
-let level1Portal = new EndPoint(activelevel[0][839].x + 40, activelevel[0][839].y - 120);
-let level2Portal = new EndPoint(activelevel[1][899].x + 120, activelevel[1][899].y, 60, 80);
-let level3Portal = new EndPoint(activelevel[2][899].x + 120, activelevel[2][899].y, 60, 80);
-let activeportal = [level1Portal, level2Portal, level3Portal];
-let currentportal = 1;
+let levelportal = new EndPoint(activelevel[currentlevel - 1][839].x + 40, activelevel[currentlevel - 1][839].y - 120);
 let gScreens = new gameScreens(GAME_WIDTH, GAME_HEIGHT);
 let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
-let enemy = [];
-enemy[0] = new Enemy(level1block[740].x, level1block[740].y, level1block[735].x, level1block[741].x, 3, 3);
-enemy[1] = new Enemy(level1block[770].x, level1block[770].y, level1block[759].x, level1block[771].x, 4, 4);
+let level1enemies = [];
+let level2enemies = [];
+let level3enemies = [];
+level1enemies[0] = new Enemy(activelevel[0][740].x, activelevel[0][740].y, activelevel[0][735].x, activelevel[0][741].x, 3, 3);
+level1enemies[1] = new Enemy(activelevel[0][770].x, activelevel[0][770].y, activelevel[0][759].x, activelevel[0][771].x, 4, 4);
+level2enemies[0] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][759].x, activelevel[1][771].x, 4, 4);
+level2enemies[1] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][755].x, activelevel[1][771].x, 5, 5);
+level3enemies[0] = new Enemy(activelevel[2][770].x, activelevel[2][770].y, activelevel[2][759].x, activelevel[2][771].x, 4, 4);
+level3enemies[1] = new Enemy(activelevel[2][770].x, activelevel[2][770].y, activelevel[2][759].x, activelevel[2][771].x, 4, 4);
+let activeenemies = [level1enemies, level2enemies, level3enemies];
 var gamestart = true;
 var gameinstructions = false;
 var gameplay = false;
@@ -139,7 +143,6 @@ function gameStart(timestamp) {
 }
 
 document.addEventListener("click", (ev) => {
-    // ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (gamestart === true) {
         if (
             ev.clientX >= 336 + winRect.left + 2 &&
@@ -231,8 +234,8 @@ function coinCollision() {
 }
 
 function enemyCollision() {
-    for (var i = 0; i < enemy.length; i++) {
-        if (sprite.position.x >= enemy[i].x - 29 && sprite.position.x <= enemy[i].x + 40 && enemy[i].y >= sprite.position.y - 40 && enemy[i].y <= sprite.position.y + sprite.spritesheetHeight) {
+    for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
+        if (sprite.position.x >= activeenemies[currentlevel - 1][i].x - 29 && sprite.position.x <= activeenemies[currentlevel - 1][i].x + 40 && activeenemies[currentlevel - 1][i].y >= sprite.position.y - 40 && activeenemies[currentlevel - 1][i].y <= sprite.position.y + sprite.spritesheetHeight) {
             ctx.fillStyle = "red";
             ctx.fillRect(sprite.position.x, sprite.position.y - 10, 30, 3);
             playerHurt.play();
@@ -274,12 +277,12 @@ function loop() {
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
-        for (var i = 0; i < enemy.length; i++) {
-            enemy[i].x -= sprite.dX;
-            enemy[i].xLBound -= sprite.dX;
-            enemy[i].xRBound -= sprite.dX;
+        for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
+            activeenemies[currentlevel - 1][i].x -= sprite.dX;
+            activeenemies[currentlevel - 1][i].xLBound -= sprite.dX;
+            activeenemies[currentlevel - 1][i].xRBound -= sprite.dX;
         }
-        level1Portal.x -= sprite.dX;
+        levelportal.x -= sprite.dX;
         for (var i = 0; i < activelevel[currentlevel - 1].length; i++) {
             activelevel[currentlevel - 1][i].x -= sprite.dX;
         }
@@ -291,12 +294,12 @@ function loop() {
         bg.posGP.l2x -= sprite.dX * 0.4;
         bg.posGP.l3x -= sprite.dX * 0.6;
         bg.posGP.l4x -= sprite.dX * 0.8;
-        for (var i = 0; i < enemy.length; i++) {
-            enemy[i].x -= sprite.dX;
-            enemy[i].xLBound -= sprite.dX;
-            enemy[i].xRBound -= sprite.dX;
+        for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
+            activeenemies[currentlevel - 1][i].x -= sprite.dX;
+            activeenemies[currentlevel - 1][i].xLBound -= sprite.dX;
+            activeenemies[currentlevel - 1][i].xRBound -= sprite.dX;
         }
-        activeportal[currentportal - 1].x -= sprite.dX;
+        levelportal.x -= sprite.dX;
         for (var i = 0; i < activelevel[currentlevel - 1].length; i++) {
             activelevel[currentlevel - 1][i].x -= sprite.dX;
         }
@@ -329,18 +332,20 @@ function resetPosition() {
             activelevel[currentlevel - 1][i].x -= rstPosDff;
         }
     }
-    enemy[0].x = activelevel[currentlevel - 1][740].x;
-    enemy[0].y = activelevel[currentlevel - 1][740].y;
-    enemy[0].xLBound = activelevel[currentlevel - 1][735].x;
-    enemy[0].xRBound = activelevel[currentlevel - 1][741].x;
-    enemy[1].x = activelevel[currentlevel - 1][770].x;
-    enemy[1].y = activelevel[currentlevel - 1][770].y;
-    enemy[1].xLBound = activelevel[currentlevel - 1][759].x;
-    enemy[1].xRBound = activelevel[currentlevel - 1][771].x;
+    // for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
+    // }
+    activeenemies[currentlevel - 1][0].x = activelevel[currentlevel - 1][740].x;
+    activeenemies[currentlevel - 1][0].y = activelevel[currentlevel - 1][740].y;
+    activeenemies[currentlevel - 1][0].xLBound = activelevel[currentlevel - 1][735].x;
+    activeenemies[currentlevel - 1][0].xRBound = activelevel[currentlevel - 1][741].x;
+    activeenemies[currentlevel - 1][1].x = activelevel[currentlevel - 1][770].x;
+    activeenemies[currentlevel - 1][1].y = activelevel[currentlevel - 1][770].y;
+    activeenemies[currentlevel - 1][1].xLBound = activelevel[currentlevel - 1][759].x;
+    activeenemies[currentlevel - 1][1].xRBound = activelevel[currentlevel - 1][771].x;
     sprite.position.x = 250;
     sprite.position.y = 300;
-    activeportal[currentportal - 1].x = activelevel[currentlevel - 1][839].x + 40;
-    activeportal[currentportal - 1].y = activelevel[currentlevel - 1][839].y - 120;
+    levelportal.x = activelevel[currentlevel - 1][839].x + 40;
+    levelportal.y = activelevel[currentlevel - 1][839].y - 120;
 }
 
 function collisionDetection(levelParameter, portalParameter) {
@@ -397,7 +402,7 @@ function collisionDetection(levelParameter, portalParameter) {
     }
 
     //         Portal detection        //
-    if (sprite.position.x > portalParameter.x && sprite.position.x <= portalParameter.x + +50 && sprite.position.y > portalParameter.y && sprite.position.y && portalParameter.y + 120 - 72) {
+    if (sprite.position.x > portalParameter.x - 30 && sprite.position.x <= portalParameter.x + 60 && sprite.position.y >= portalParameter.y && sprite.position.y <= portalParameter.y + 120 - 72) {
         if (currentlevel === 3) {
             sprite.position.x = levelParameter[839].x + 70;
             sprite.position.y = levelParameter[839].y - 36;
@@ -406,7 +411,7 @@ function collisionDetection(levelParameter, portalParameter) {
             gameplay = false;
             gameend = true;
             gameLoop();
-        } else {
+        } else if (currentlevel < 3) {
             currentlevel += 1;
             resetPosition();
         }
@@ -422,19 +427,19 @@ function gamePlay(timestamp) {
     for (var i = 0; i < activelevel[currentlevel - 1].length; i++) {
         activelevel[currentlevel - 1][i].drawBlock(ctx);
         if (activelevel[currentlevel - 1][i].id != 0) {
-            // activelevel[currentlevel - 1][i].active(ctx, i);
+            activelevel[currentlevel - 1][i].active(ctx, i);
         }
     }
     gStats.update(deltaTime);
     gStats.display(ctx, gScreens.coin1Count + 3 * gScreens.coin2Count);
 
-    activeportal[currentportal - 1].display(ctx);
+    levelportal.display(ctx);
     loop();
-    collisionDetection(level1block, activeportal[currentportal - 1]);
+    collisionDetection(level1block, levelportal);
     coinCollision();
-    for (var i = 0; i < enemy.length; i++) {
-        enemy[i].display(ctx);
-        enemy[i].patrol();
+    for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
+        activeenemies[currentlevel - 1][i].display(ctx);
+        activeenemies[currentlevel - 1][i].patrol();
     }
     enemyCollision();
     sprite.update(deltaTime);
