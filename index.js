@@ -14,7 +14,7 @@ TODO:
         [X] And then try rewriting the collision logic
     [X] Add moving enemies
     [X] Add a portal at the end of each level
-    [ ] Add more levels
+    [X] Add more levels
 FIXME:
     [X] Fix the spawning bug after falling off platform
     [X] Fix the bug with the pause button
@@ -308,6 +308,41 @@ function loop() {
     }
 }
 
+function resetPosition() {
+    bg.posGP.l1x = 0;
+    bg.posGP.l2x = 0;
+    bg.posGP.l3x = 0;
+    bg.posGP.l4x = 0;
+    if (sprite.position.x > activelevel[currentlevel - 1][786].x) {
+        if (activelevel[currentlevel - 1][786].x < 0) {
+            rstPosDff = 240 + Math.abs(activelevel[currentlevel - 1][786].x);
+        }
+        if (activelevel[currentlevel - 1][786].x > 0) {
+            rstPosDff = 240 - activelevel[currentlevel - 1][786].x;
+        }
+        for (var i = 0; i < level1block.length; i++) {
+            activelevel[currentlevel - 1][i].x += rstPosDff;
+        }
+    } else if (sprite.position.x < activelevel[currentlevel - 1][786].x) {
+        rstPosDff = activelevel[currentlevel - 1][786].x - 240;
+        for (var i = 0; i < level1block.length; i++) {
+            activelevel[currentlevel - 1][i].x -= rstPosDff;
+        }
+    }
+    enemy[0].x = activelevel[currentlevel - 1][740].x;
+    enemy[0].y = activelevel[currentlevel - 1][740].y;
+    enemy[0].xLBound = activelevel[currentlevel - 1][735].x;
+    enemy[0].xRBound = activelevel[currentlevel - 1][741].x;
+    enemy[1].x = activelevel[currentlevel - 1][770].x;
+    enemy[1].y = activelevel[currentlevel - 1][770].y;
+    enemy[1].xLBound = activelevel[currentlevel - 1][759].x;
+    enemy[1].xRBound = activelevel[currentlevel - 1][771].x;
+    sprite.position.x = 250;
+    sprite.position.y = 300;
+    activeportal[currentportal - 1].x = activelevel[currentlevel - 1][839].x + 40;
+    activeportal[currentportal - 1].y = activelevel[currentlevel - 1][839].y - 120;
+}
+
 function collisionDetection(levelParameter, portalParameter) {
     //    Horizontal block collision   //
     for (var i = 0; i < activelevel[currentlevel - 1].length; i++) {
@@ -358,70 +393,23 @@ function collisionDetection(levelParameter, portalParameter) {
     //         Falling off edge        //
     if (sprite.position.y >= activelevel[currentlevel - 1][899].y + 40) {
         gStats.hp -= gStats.onehp;
-        bg.posGP.l1x = 0;
-        bg.posGP.l2x = 0;
-        bg.posGP.l3x = 0;
-        bg.posGP.l4x = 0;
-        if (sprite.position.x > activelevel[currentlevel - 1][786].x) {
-            if (activelevel[currentlevel - 1][786].x < 0) {
-                rstPosDff = 240 + Math.abs(activelevel[currentlevel - 1][786].x);
-            }
-            if (activelevel[currentlevel - 1][786].x > 0) {
-                rstPosDff = 240 - activelevel[currentlevel - 1][786].x;
-            }
-            for (var i = 0; i < level1block.length; i++) {
-                activelevel[currentlevel - 1][i].x += rstPosDff;
-            }
-        } else if (sprite.position.x < activelevel[currentlevel - 1][786].x) {
-            rstPosDff = activelevel[currentlevel - 1][786].x - 240;
-            for (var i = 0; i < level1block.length; i++) {
-                activelevel[currentlevel - 1][i].x -= rstPosDff;
-            }
-        }
-        enemy[0].x = activelevel[currentlevel - 1][740].x;
-        enemy[0].y = activelevel[currentlevel - 1][740].y;
-        enemy[0].xLBound = activelevel[currentlevel - 1][735].x;
-        enemy[0].xRBound = activelevel[currentlevel - 1][741].x;
-        enemy[1].x = activelevel[currentlevel - 1][770].x;
-        enemy[1].y = activelevel[currentlevel - 1][770].y;
-        enemy[1].xLBound = activelevel[currentlevel - 1][759].x;
-        enemy[1].xRBound = activelevel[currentlevel - 1][771].x;
-        sprite.position.x = 250;
-        sprite.position.y = 300;
-        activeportal[currentportal - 1].x = activelevel[currentlevel - 1][839].x + 40;
-        activeportal[currentportal - 1].y = activelevel[currentlevel - 1][839].y - 120;
+        resetPosition();
     }
 
     //         Portal detection        //
     if (sprite.position.x > portalParameter.x && sprite.position.x <= portalParameter.x + +50 && sprite.position.y > portalParameter.y && sprite.position.y && portalParameter.y + 120 - 72) {
-        // sprite.position.x = levelParameter[839].x + 70;
-        // sprite.position.y = levelParameter[839].y - 36;
-        currentlevel += 1;
-        // gamestart = false;
-        // gameinstructions = false;
-        // gameplay = false;
-        // gameend = true;
-        gamePlay();
-    }
-    if (sprite.position.x > portalParameter.x && sprite.position.x <= portalParameter.x + +50 && sprite.position.y > portalParameter.y && sprite.position.y && portalParameter.y + 120 - 72) {
-        // sprite.position.x = levelParameter[839].x + 70;
-        // sprite.position.y = levelParameter[839].y - 36;
-        currentlevel += 1;
-        // gamestart = false;
-        // gameinstructions = false;
-        // gameplay = false;
-        // gameend = true;
-        gamePlay();
-    }
-    if (sprite.position.x > portalParameter.x && sprite.position.x <= portalParameter.x + +50 && sprite.position.y > portalParameter.y && sprite.position.y && portalParameter.y + 120 - 72) {
-        // sprite.position.x = levelParameter[839].x + 70;
-        // sprite.position.y = levelParameter[839].y - 36;
-        currentlevel += 1;
-        // gamestart = false;
-        // gameinstructions = false;
-        // gameplay = false;
-        // gameend = true;
-        gamePlay();
+        if (currentlevel === 3) {
+            sprite.position.x = levelParameter[839].x + 70;
+            sprite.position.y = levelParameter[839].y - 36;
+            gamestart = false;
+            gameinstructions = false;
+            gameplay = false;
+            gameend = true;
+            gameLoop();
+        } else {
+            currentlevel += 1;
+            resetPosition();
+        }
     }
 }
 
