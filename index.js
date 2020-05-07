@@ -92,10 +92,8 @@ level1enemies[1] = new Enemy(activelevel[0][770].x, activelevel[0][770].y, activ
 level2enemies[0] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][759].x, activelevel[1][771].x, 0, 0, 4, 0);
 level2enemies[1] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][755].x, activelevel[1][771].x, 0, 0, 5, 0);
 for (var i = 0; i < 11; i++) {
-    level3enemies[i] = new Enemy(activelevel[2][789 + i*4].x, activelevel[2][789 - i*60], 0, 0, activelevel[1][129 + i*4].y, activelevel[2][849 + i*4].y, 0, 8);
+    level3enemies[i] = new Enemy(activelevel[2][789 + i * 4].x, activelevel[2][789 - i * 60], 0, 0, activelevel[1][129 + i * 4].y, activelevel[2][849 + i * 4].y, 0, 10);
 }
-// level3enemies[0] = new Enemy(activelevel[2][789].x, activelevel[2][789].y, 0, 0, activelevel[1][129].y, activelevel[2][849].y, 0, 6);
-// level3enemies[1] = new Enemy(activelevel[2][793].x, activelevel[2][793].y, 0, 0, activelevel[1][133].y, activelevel[2][853].y, 0, 6);
 let activeenemies = [level1enemies, level2enemies, level3enemies];
 var gamestart = true;
 var gameinstructions = false;
@@ -238,7 +236,12 @@ function coinCollision() {
 
 function enemyCollision() {
     for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
-        if (sprite.position.x >= activeenemies[currentlevel - 1][i].x - 29 && sprite.position.x <= activeenemies[currentlevel - 1][i].x + 40 && activeenemies[currentlevel - 1][i].y >= sprite.position.y - 40 && activeenemies[currentlevel - 1][i].y <= sprite.position.y + sprite.spritesheetHeight) {
+        if (
+            sprite.position.x >= activeenemies[currentlevel - 1][i].x - 29 &&
+            sprite.position.x <= activeenemies[currentlevel - 1][i].x + 40 &&
+            activeenemies[currentlevel - 1][i].y >= sprite.position.y - 40 &&
+            activeenemies[currentlevel - 1][i].y <= sprite.position.y + sprite.spritesheetHeight
+        ) {
             ctx.fillStyle = "red";
             ctx.fillRect(sprite.position.x, sprite.position.y - 10, 30, 3);
             playerHurt.play();
@@ -346,19 +349,15 @@ function resetPosition() {
             activeenemies[currentlevel - 1][1].y = activelevel[currentlevel - 1][770].y;
             activeenemies[currentlevel - 1][1].xLBound = activelevel[currentlevel - 1][759].x;
             activeenemies[currentlevel - 1][1].xRBound = activelevel[currentlevel - 1][771].x;
-        break;
+            break;
         case 3:
             for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
-                activeenemies[currentlevel - 1][i].x = activelevel[currentlevel - 1][789 + i*4].x;
-                activeenemies[currentlevel - 1][i].y = activelevel[currentlevel - 1][789 - i*60].y;
+                activeenemies[currentlevel - 1][i].x = activelevel[currentlevel - 1][789 + i * 4].x;
+                activeenemies[currentlevel - 1][i].y = activelevel[currentlevel - 1][789 - i * 60].y;
             }
-            // activeenemies[currentlevel - 1][0].x = activelevel[currentlevel - 1][789].x;
-            // activeenemies[currentlevel - 1][0].y = activelevel[currentlevel - 1][789].y;
-            // activeenemies[currentlevel - 1][1].x = activelevel[currentlevel - 1][793].x;
-            // activeenemies[currentlevel - 1][1].y = activelevel[currentlevel - 1][793].y;
             break;
     }
-    
+
     sprite.position.x = 250;
     sprite.position.y = 300;
     levelportal.x = activelevel[currentlevel - 1][839].x + 40;
@@ -443,9 +442,9 @@ function gamePlay(timestamp) {
     bg.gpdraw(ctx);
     for (var i = 0; i < activelevel[currentlevel - 1].length; i++) {
         activelevel[currentlevel - 1][i].drawBlock(ctx);
-        if (activelevel[currentlevel - 1][i].id != 0) {
-            activelevel[currentlevel - 1][i].active(ctx, i);
-        }
+        // if (activelevel[currentlevel - 1][i].id != 0) {
+        //     activelevel[currentlevel - 1][i].active(ctx, i);
+        // }
     }
     gStats.update(deltaTime);
     gStats.display(ctx, gScreens.coin1Count + 3 * gScreens.coin2Count);
