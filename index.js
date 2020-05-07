@@ -87,12 +87,15 @@ let gStats = new gameStats(GAME_WIDTH, GAME_HEIGHT);
 let level1enemies = [];
 let level2enemies = [];
 let level3enemies = [];
-level1enemies[0] = new Enemy(activelevel[0][740].x, activelevel[0][740].y, activelevel[0][735].x, activelevel[0][741].x, 3, 3);
-level1enemies[1] = new Enemy(activelevel[0][770].x, activelevel[0][770].y, activelevel[0][759].x, activelevel[0][771].x, 4, 4);
-level2enemies[0] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][759].x, activelevel[1][771].x, 4, 4);
-level2enemies[1] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][755].x, activelevel[1][771].x, 5, 5);
-level3enemies[0] = new Enemy(activelevel[2][770].x, activelevel[2][770].y, activelevel[2][759].x, activelevel[2][771].x, 4, 4);
-level3enemies[1] = new Enemy(activelevel[2][770].x, activelevel[2][770].y, activelevel[2][759].x, activelevel[2][771].x, 4, 4);
+level1enemies[0] = new Enemy(activelevel[0][740].x, activelevel[0][740].y, activelevel[0][735].x, activelevel[0][741].x, 0, 0, 3, 0);
+level1enemies[1] = new Enemy(activelevel[0][770].x, activelevel[0][770].y, activelevel[0][759].x, activelevel[0][771].x, 0, 0, 4, 0);
+level2enemies[0] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][759].x, activelevel[1][771].x, 0, 0, 4, 0);
+level2enemies[1] = new Enemy(activelevel[1][770].x, activelevel[1][770].y, activelevel[1][755].x, activelevel[1][771].x, 0, 0, 5, 0);
+for (var i = 0; i < 11; i++) {
+    level3enemies[i] = new Enemy(activelevel[2][789 + i*4].x, activelevel[2][789 - i*60], 0, 0, activelevel[1][129 + i*4].y, activelevel[2][849 + i*4].y, 0, 8);
+}
+// level3enemies[0] = new Enemy(activelevel[2][789].x, activelevel[2][789].y, 0, 0, activelevel[1][129].y, activelevel[2][849].y, 0, 6);
+// level3enemies[1] = new Enemy(activelevel[2][793].x, activelevel[2][793].y, 0, 0, activelevel[1][133].y, activelevel[2][853].y, 0, 6);
 let activeenemies = [level1enemies, level2enemies, level3enemies];
 var gamestart = true;
 var gameinstructions = false;
@@ -332,16 +335,30 @@ function resetPosition() {
             activelevel[currentlevel - 1][i].x -= rstPosDff;
         }
     }
-    // for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
-    // }
-    activeenemies[currentlevel - 1][0].x = activelevel[currentlevel - 1][740].x;
-    activeenemies[currentlevel - 1][0].y = activelevel[currentlevel - 1][740].y;
-    activeenemies[currentlevel - 1][0].xLBound = activelevel[currentlevel - 1][735].x;
-    activeenemies[currentlevel - 1][0].xRBound = activelevel[currentlevel - 1][741].x;
-    activeenemies[currentlevel - 1][1].x = activelevel[currentlevel - 1][770].x;
-    activeenemies[currentlevel - 1][1].y = activelevel[currentlevel - 1][770].y;
-    activeenemies[currentlevel - 1][1].xLBound = activelevel[currentlevel - 1][759].x;
-    activeenemies[currentlevel - 1][1].xRBound = activelevel[currentlevel - 1][771].x;
+    switch (currentlevel) {
+        case 1:
+        case 2:
+            activeenemies[currentlevel - 1][0].x = activelevel[currentlevel - 1][740].x;
+            activeenemies[currentlevel - 1][0].y = activelevel[currentlevel - 1][740].y;
+            activeenemies[currentlevel - 1][0].xLBound = activelevel[currentlevel - 1][735].x;
+            activeenemies[currentlevel - 1][0].xRBound = activelevel[currentlevel - 1][741].x;
+            activeenemies[currentlevel - 1][1].x = activelevel[currentlevel - 1][770].x;
+            activeenemies[currentlevel - 1][1].y = activelevel[currentlevel - 1][770].y;
+            activeenemies[currentlevel - 1][1].xLBound = activelevel[currentlevel - 1][759].x;
+            activeenemies[currentlevel - 1][1].xRBound = activelevel[currentlevel - 1][771].x;
+        break;
+        case 3:
+            for (var i = 0; i < activeenemies[currentlevel - 1].length; i++) {
+                activeenemies[currentlevel - 1][i].x = activelevel[currentlevel - 1][789 + i*4].x;
+                activeenemies[currentlevel - 1][i].y = activelevel[currentlevel - 1][789 - i*60].y;
+            }
+            // activeenemies[currentlevel - 1][0].x = activelevel[currentlevel - 1][789].x;
+            // activeenemies[currentlevel - 1][0].y = activelevel[currentlevel - 1][789].y;
+            // activeenemies[currentlevel - 1][1].x = activelevel[currentlevel - 1][793].x;
+            // activeenemies[currentlevel - 1][1].y = activelevel[currentlevel - 1][793].y;
+            break;
+    }
+    
     sprite.position.x = 250;
     sprite.position.y = 300;
     levelportal.x = activelevel[currentlevel - 1][839].x + 40;
