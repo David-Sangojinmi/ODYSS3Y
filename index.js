@@ -414,6 +414,7 @@ function collisionDetection(levelParameter, portalParameter) {
     //         Falling off edge        //
     if (sprite.position.y >= activelevel[currentlevel - 1][899].y + 40) {
         gStats.hp -= gStats.onehp;
+        playerHurt.play();
         resetPosition();
     }
 
