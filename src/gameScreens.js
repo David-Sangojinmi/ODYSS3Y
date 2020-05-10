@@ -62,10 +62,10 @@ export default class gameScreens {
         // Display the number of coins
         ctx.font = "40px pr celtic narrow";
         ctx.fillStyle = "white";
-        ctx.fillText(this.levelReached, 400, 264);
+        ctx.fillText(this.levelReached, 396, 264);
         ctx.fillText(this.coin1Count, 373, 328);
-        ctx.fillText(this.coin2Count, 373, 391);
-        ctx.fillText(this.coin1Count + 3*this.coin2Count, 371, 455);
+        ctx.fillText(this.coin2Count, 373, 390);
+        ctx.fillText(this.coin1Count + 3*this.coin2Count, 371, 454);
         // Eventually add a replay option
     }
 
