@@ -1,5 +1,5 @@
 # ODYSS3Y
-Link to play the game -> <a href="https://davidsangojinmi.ml/ODYSS3Y">here</a>.
+Link to play the game -> <a href="https://iamdavid.dev/ODYSS3Y">here</a>.
 
 Start screen. <img src="images/Start_Screen.PNG"/>
 Instructions. <img src="images/Instructions_Screen.PNG"/>
